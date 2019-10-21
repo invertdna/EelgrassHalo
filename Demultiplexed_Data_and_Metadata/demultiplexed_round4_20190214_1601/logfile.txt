@@ -1,0 +1,794 @@
+Metadata has 64 rows and 22 columns including header.
+Expecting 63 samples total.
+
+Checking that all columns in metadata are there
+looking good, COLNUM_FILE1
+looking good, COLNUM_FILE2
+looking good, COLNUM_ID1
+looking good, COLNUM_ID1_SEQ
+looking good, COLNUM_ID2
+looking good, COLNUM_ID2_START
+looking good, COLNUM_SAMPLE
+looking good, COLNUM_PRIMER1
+looking good, COLNUM_PRIMER2
+All columns passed test
+Files read from metadata columns 21 and 22
+File names:
+Lib-A-EJP-ROUND4_S1_L001_R1_001.fastq	Lib-A-EJP-ROUND4_S1_L001_R2_001.fastq
+Lib-B-EJP-ROUND4_S2_L001_R1_001.fastq	Lib-B-EJP-ROUND4_S2_L001_R2_001.fastq
+Lib-C-EJP-ROUND4_S3_L001_R1_001.fastq	Lib-C-EJP-ROUND4_S3_L001_R2_001.fastq
+Lib-D-EJP-ROUND4_S4_L001_R1_001.fastq	Lib-D-EJP-ROUND4_S4_L001_R2_001.fastq
+Lib-E-EJP-ROUND4_S5_L001_R1_001.fastq	Lib-E-EJP-ROUND4_S5_L001_R2_001.fastq
+Lib-F-EJP-ROUND4_S6_L001_R1_001.fastq	Lib-F-EJP-ROUND4_S6_L001_R2_001.fastq
+Lib-G-EJP-ROUND4_S7_L001_R1_001.fastq	Lib-G-EJP-ROUND4_S7_L001_R2_001.fastq
+
+Secondary indexes read from sequencing metadata (9 total)
+
+These are the secondary barcodes
+ACACAC ACAGCA ACATGT ACGACG ATATCG CTCGCA GCGCTC GTCTCT TCGCAT
+that is, 9 unique barcodes
+and they seem to be sorted alphabetically?
+and they are this long 
+ID2_LENGTH  es 6
+Primers read from metadata columns 17 and 18
+Primer sequences: GGWACWGGWTGAACWGTWTAYCCYCC TANACYTCNGGRTGNCCRAARAAYCA
+
+File1:Lib-A-EJP-ROUND4_S1_L001_R1_001.fastq	File2:Lib-A-EJP-ROUND4_S1_L001_R2_001.fastq	Lib:Lib_A
+File1:Lib-B-EJP-ROUND4_S2_L001_R1_001.fastq	File2:Lib-B-EJP-ROUND4_S2_L001_R2_001.fastq	Lib:Lib_B
+File1:Lib-C-EJP-ROUND4_S3_L001_R1_001.fastq	File2:Lib-C-EJP-ROUND4_S3_L001_R2_001.fastq	Lib:Lib_C
+File1:Lib-D-EJP-ROUND4_S4_L001_R1_001.fastq	File2:Lib-D-EJP-ROUND4_S4_L001_R2_001.fastq	Lib:Lib_D
+File1:Lib-E-EJP-ROUND4_S5_L001_R1_001.fastq	File2:Lib-E-EJP-ROUND4_S5_L001_R2_001.fastq	Lib:Lib_E
+File1:Lib-F-EJP-ROUND4_S6_L001_R1_001.fastq	File2:Lib-F-EJP-ROUND4_S6_L001_R2_001.fastq	Lib:Lib_F
+File1:Lib-G-EJP-ROUND4_S7_L001_R1_001.fastq	File2:Lib-G-EJP-ROUND4_S7_L001_R2_001.fastq	Lib:Lib_G
+primers look good
+Working on Library 1 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 2 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 3 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 4 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 5 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 6 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9Working on Library 7 out of 7
+Working on sample 1 of 9Working on sample 2 of 9Working on sample 3 of 9Working on sample 4 of 9Working on sample 5 of 9Working on sample 6 of 9Working on sample 7 of 9Working on sample 8 of 9Working on sample 9 of 9This is read1 /Users/ramongallego/GoogleDrive/Raw_data/Halo/EJP_ROUND4/Lib-B-EJP-ROUND4_S2_L001_R1_001.fastq
+[1] "the script gets executed"
+[1] "/Users/ramongallego/demultiplexer_for_DADA2/scripts"
+
+
+processing file: dada2.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |.                                                                |   2%
+  ordinary text without R code
+
+  |                                                                         |...                                                              |   5%
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |....                                                             |   7%
+  ordinary text without R code
+
+  |                                                                         |......                                                           |   9%
+label: loading packages (with options) 
+List of 2
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+
+── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+✔ tibble  2.0.1     ✔ dplyr   0.7.8
+✔ tidyr   0.8.2     ✔ stringr 1.3.1
+✔ readr   1.1.1     ✔ forcats 0.3.0
+── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Loading required package: Rcpp
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: 'BiocGenerics'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from 'package:dplyr':
+
+    combine, intersect, setdiff, union
+
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from 'package:base':
+
+    anyDuplicated, append, as.data.frame, basename, cbind,
+    colMeans, colnames, colSums, dirname, do.call, duplicated,
+    eval, evalq, Filter, Find, get, grep, grepl, intersect,
+    is.unsorted, lapply, lengths, Map, mapply, match, mget, order,
+    paste, pmax, pmax.int, pmin, pmin.int, Position, rank, rbind,
+    Reduce, rowMeans, rownames, rowSums, sapply, setdiff, sort,
+    table, tapply, union, unique, unsplit, which, which.max,
+    which.min
+
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: 'S4Vectors'
+
+The following objects are masked from 'package:dplyr':
+
+    first, rename
+
+The following object is masked from 'package:tidyr':
+
+    expand
+
+The following object is masked from 'package:base':
+
+    expand.grid
+
+Loading required package: IRanges
+
+Attaching package: 'IRanges'
+
+The following objects are masked from 'package:dplyr':
+
+    collapse, desc, slice
+
+The following object is masked from 'package:purrr':
+
+    reduce
+
+Loading required package: XVector
+
+Attaching package: 'XVector'
+
+The following object is masked from 'package:purrr':
+
+    compact
+
+
+Attaching package: 'Biostrings'
+
+The following object is masked from 'package:base':
+
+    strsplit
+
+Parsed with column specification:
+cols(
+  Full_Id = col_character(),
+  fastq_header = col_character(),
+  Sample = col_character()
+)
+  |                                                                         |.......                                                          |  11%
+  ordinary text without R code
+
+  |                                                                         |.........                                                        |  14%
+label: listing files
+  |                                                                         |..........                                                       |  16%
+  ordinary text without R code
+
+  |                                                                         |............                                                     |  18%
+label: qplot1 (with options) 
+List of 1
+ $ echo: logi FALSE
+
+  |                                                                         |.............                                                    |  20%
+  ordinary text without R code
+
+  |                                                                         |...............                                                  |  23%
+label: plot2 (with options) 
+List of 1
+ $ echo: logi FALSE
+
+  |                                                                         |................                                                 |  25%
+  ordinary text without R code
+
+  |                                                                         |..................                                               |  27%
+label: qplot3 (with options) 
+List of 1
+ $ echo: logi FALSE
+
+  |                                                                         |...................                                              |  30%
+  ordinary text without R code
+
+  |                                                                         |.....................                                            |  32%
+label: filter and trim
+  |                                                                         |......................                                           |  34%
+  ordinary text without R code
+
+  |                                                                         |........................                                         |  36%
+label: as tibble
+  |                                                                         |.........................                                        |  39%
+  ordinary text without R code
+
+  |                                                                         |...........................                                      |  41%
+label: learning errors (with options) 
+List of 1
+ $ echo: symbol T
+
+  |                                                                         |............................                                     |  43%
+  ordinary text without R code
+
+  |                                                                         |..............................                                   |  45%
+label: plotErrors
+  |                                                                         |...............................                                  |  48%
+  ordinary text without R code
+
+  |                                                                         |................................                                 |  50%
+label: dereplication (with options) 
+List of 2
+ $ echo   : symbol F
+ $ message: logi FALSE
+
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACACAC_F1_filt.fastq.gz
+Encountered 7794 unique sequences from 30235 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACAGCA_F1_filt.fastq.gz
+Encountered 5340 unique sequences from 15301 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACATGT_F1_filt.fastq.gz
+Encountered 4720 unique sequences from 14012 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACGACG_F1_filt.fastq.gz
+Encountered 4584 unique sequences from 20518 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ATATCG_F1_filt.fastq.gz
+Encountered 2611 unique sequences from 7589 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_CTCGCA_F1_filt.fastq.gz
+Encountered 8976 unique sequences from 27350 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GCGCTC_F1_filt.fastq.gz
+Encountered 5152 unique sequences from 19694 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GTCTCT_F1_filt.fastq.gz
+Encountered 8160 unique sequences from 34780 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_TCGCAT_F1_filt.fastq.gz
+Encountered 7888 unique sequences from 26028 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACACAC_F1_filt.fastq.gz
+Encountered 4494 unique sequences from 14630 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACAGCA_F1_filt.fastq.gz
+Encountered 2944 unique sequences from 8922 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACATGT_F1_filt.fastq.gz
+Encountered 2724 unique sequences from 6565 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACGACG_F1_filt.fastq.gz
+Encountered 3796 unique sequences from 13273 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ATATCG_F1_filt.fastq.gz
+Encountered 3735 unique sequences from 9629 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_CTCGCA_F1_filt.fastq.gz
+Encountered 7128 unique sequences from 20325 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GCGCTC_F1_filt.fastq.gz
+Encountered 5389 unique sequences from 15281 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GTCTCT_F1_filt.fastq.gz
+Encountered 3198 unique sequences from 8250 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_TCGCAT_F1_filt.fastq.gz
+Encountered 24803 unique sequences from 80429 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACACAC_F1_filt.fastq.gz
+Encountered 5298 unique sequences from 10021 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACAGCA_F1_filt.fastq.gz
+Encountered 7269 unique sequences from 23377 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACATGT_F1_filt.fastq.gz
+Encountered 5140 unique sequences from 23319 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACGACG_F1_filt.fastq.gz
+Encountered 5410 unique sequences from 15913 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ATATCG_F1_filt.fastq.gz
+Encountered 4539 unique sequences from 16386 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_CTCGCA_F1_filt.fastq.gz
+Encountered 4412 unique sequences from 14694 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GCGCTC_F1_filt.fastq.gz
+Encountered 2491 unique sequences from 14881 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GTCTCT_F1_filt.fastq.gz
+Encountered 6984 unique sequences from 22916 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_TCGCAT_F1_filt.fastq.gz
+Encountered 3185 unique sequences from 10999 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACACAC_F1_filt.fastq.gz
+Encountered 6210 unique sequences from 19808 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACAGCA_F1_filt.fastq.gz
+Encountered 6855 unique sequences from 21218 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACATGT_F1_filt.fastq.gz
+Encountered 13329 unique sequences from 46957 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACGACG_F1_filt.fastq.gz
+Encountered 7213 unique sequences from 32413 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ATATCG_F1_filt.fastq.gz
+Encountered 6229 unique sequences from 19434 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_CTCGCA_F1_filt.fastq.gz
+Encountered 52 unique sequences from 58 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GCGCTC_F1_filt.fastq.gz
+Encountered 1288 unique sequences from 4442 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GTCTCT_F1_filt.fastq.gz
+Encountered 9427 unique sequences from 32204 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_TCGCAT_F1_filt.fastq.gz
+Encountered 5744 unique sequences from 19038 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACACAC_F1_filt.fastq.gz
+Encountered 4052 unique sequences from 16067 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACAGCA_F1_filt.fastq.gz
+Encountered 6750 unique sequences from 16344 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACATGT_F1_filt.fastq.gz
+Encountered 3877 unique sequences from 12827 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACGACG_F1_filt.fastq.gz
+Encountered 5260 unique sequences from 19065 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ATATCG_F1_filt.fastq.gz
+Encountered 5339 unique sequences from 15074 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_CTCGCA_F1_filt.fastq.gz
+Encountered 5466 unique sequences from 15880 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GCGCTC_F1_filt.fastq.gz
+Encountered 18567 unique sequences from 75800 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GTCTCT_F1_filt.fastq.gz
+Encountered 37 unique sequences from 42 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_TCGCAT_F1_filt.fastq.gz
+Encountered 55 unique sequences from 63 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACACAC_F1_filt.fastq.gz
+Encountered 6038 unique sequences from 15446 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACAGCA_F1_filt.fastq.gz
+Encountered 4382 unique sequences from 17323 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACATGT_F1_filt.fastq.gz
+Encountered 33 unique sequences from 38 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACGACG_F1_filt.fastq.gz
+Encountered 3045 unique sequences from 11451 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ATATCG_F1_filt.fastq.gz
+Encountered 20 unique sequences from 23 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_CTCGCA_F1_filt.fastq.gz
+Encountered 13601 unique sequences from 50064 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GCGCTC_F1_filt.fastq.gz
+Encountered 30 unique sequences from 30 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GTCTCT_F1_filt.fastq.gz
+Encountered 11992 unique sequences from 43245 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_TCGCAT_F1_filt.fastq.gz
+Encountered 5763 unique sequences from 16218 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACACAC_F1_filt.fastq.gz
+Encountered 7155 unique sequences from 21265 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACAGCA_F1_filt.fastq.gz
+Encountered 10353 unique sequences from 33283 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACATGT_F1_filt.fastq.gz
+Encountered 2301 unique sequences from 11819 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACGACG_F1_filt.fastq.gz
+Encountered 1637 unique sequences from 9821 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ATATCG_F1_filt.fastq.gz
+Encountered 9004 unique sequences from 30162 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_CTCGCA_F1_filt.fastq.gz
+Encountered 5911 unique sequences from 13521 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GCGCTC_F1_filt.fastq.gz
+Encountered 30 unique sequences from 36 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GTCTCT_F1_filt.fastq.gz
+Encountered 4852 unique sequences from 20516 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_TCGCAT_F1_filt.fastq.gz
+Encountered 14359 unique sequences from 55868 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACACAC_F2_filt.fastq.gz
+Encountered 12712 unique sequences from 30235 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACAGCA_F2_filt.fastq.gz
+Encountered 7042 unique sequences from 15301 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACATGT_F2_filt.fastq.gz
+Encountered 6576 unique sequences from 14012 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACGACG_F2_filt.fastq.gz
+Encountered 8044 unique sequences from 20518 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ATATCG_F2_filt.fastq.gz
+Encountered 3580 unique sequences from 7589 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_CTCGCA_F2_filt.fastq.gz
+Encountered 12429 unique sequences from 27350 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GCGCTC_F2_filt.fastq.gz
+Encountered 8452 unique sequences from 19694 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GTCTCT_F2_filt.fastq.gz
+Encountered 13516 unique sequences from 34780 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_TCGCAT_F2_filt.fastq.gz
+Encountered 11355 unique sequences from 26028 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACACAC_F2_filt.fastq.gz
+Encountered 6689 unique sequences from 14630 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACAGCA_F2_filt.fastq.gz
+Encountered 4513 unique sequences from 8922 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACATGT_F2_filt.fastq.gz
+Encountered 3716 unique sequences from 6565 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACGACG_F2_filt.fastq.gz
+Encountered 5879 unique sequences from 13273 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ATATCG_F2_filt.fastq.gz
+Encountered 5033 unique sequences from 9629 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_CTCGCA_F2_filt.fastq.gz
+Encountered 10133 unique sequences from 20325 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GCGCTC_F2_filt.fastq.gz
+Encountered 7390 unique sequences from 15281 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GTCTCT_F2_filt.fastq.gz
+Encountered 4190 unique sequences from 8250 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_TCGCAT_F2_filt.fastq.gz
+Encountered 35606 unique sequences from 80429 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACACAC_F2_filt.fastq.gz
+Encountered 6858 unique sequences from 10021 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACAGCA_F2_filt.fastq.gz
+Encountered 10593 unique sequences from 23377 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACATGT_F2_filt.fastq.gz
+Encountered 8968 unique sequences from 23319 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACGACG_F2_filt.fastq.gz
+Encountered 7600 unique sequences from 15913 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ATATCG_F2_filt.fastq.gz
+Encountered 6612 unique sequences from 16386 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_CTCGCA_F2_filt.fastq.gz
+Encountered 7612 unique sequences from 14694 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GCGCTC_F2_filt.fastq.gz
+Encountered 5687 unique sequences from 14881 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GTCTCT_F2_filt.fastq.gz
+Encountered 9873 unique sequences from 22916 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_TCGCAT_F2_filt.fastq.gz
+Encountered 4528 unique sequences from 10999 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACACAC_F2_filt.fastq.gz
+Encountered 8868 unique sequences from 19808 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACAGCA_F2_filt.fastq.gz
+Encountered 9635 unique sequences from 21218 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACATGT_F2_filt.fastq.gz
+Encountered 19329 unique sequences from 46957 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACGACG_F2_filt.fastq.gz
+Encountered 12683 unique sequences from 32413 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ATATCG_F2_filt.fastq.gz
+Encountered 8632 unique sequences from 19434 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_CTCGCA_F2_filt.fastq.gz
+Encountered 54 unique sequences from 58 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GCGCTC_F2_filt.fastq.gz
+Encountered 1788 unique sequences from 4442 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GTCTCT_F2_filt.fastq.gz
+Encountered 13955 unique sequences from 32204 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_TCGCAT_F2_filt.fastq.gz
+Encountered 7718 unique sequences from 19038 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACACAC_F2_filt.fastq.gz
+Encountered 5950 unique sequences from 16067 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACAGCA_F2_filt.fastq.gz
+Encountered 9108 unique sequences from 16344 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACATGT_F2_filt.fastq.gz
+Encountered 5041 unique sequences from 12827 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACGACG_F2_filt.fastq.gz
+Encountered 7387 unique sequences from 19065 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ATATCG_F2_filt.fastq.gz
+Encountered 6855 unique sequences from 15074 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_CTCGCA_F2_filt.fastq.gz
+Encountered 7474 unique sequences from 15880 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GCGCTC_F2_filt.fastq.gz
+Encountered 27606 unique sequences from 75800 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GTCTCT_F2_filt.fastq.gz
+Encountered 39 unique sequences from 42 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_TCGCAT_F2_filt.fastq.gz
+Encountered 59 unique sequences from 63 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACACAC_F2_filt.fastq.gz
+Encountered 7961 unique sequences from 15446 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACAGCA_F2_filt.fastq.gz
+Encountered 7140 unique sequences from 17323 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACATGT_F2_filt.fastq.gz
+Encountered 34 unique sequences from 38 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACGACG_F2_filt.fastq.gz
+Encountered 4954 unique sequences from 11451 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ATATCG_F2_filt.fastq.gz
+Encountered 21 unique sequences from 23 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_CTCGCA_F2_filt.fastq.gz
+Encountered 21051 unique sequences from 50064 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GCGCTC_F2_filt.fastq.gz
+Encountered 29 unique sequences from 30 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GTCTCT_F2_filt.fastq.gz
+Encountered 17909 unique sequences from 43245 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_TCGCAT_F2_filt.fastq.gz
+Encountered 7922 unique sequences from 16218 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACACAC_F2_filt.fastq.gz
+Encountered 9999 unique sequences from 21265 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACAGCA_F2_filt.fastq.gz
+Encountered 14765 unique sequences from 33283 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACATGT_F2_filt.fastq.gz
+Encountered 4436 unique sequences from 11819 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACGACG_F2_filt.fastq.gz
+Encountered 3392 unique sequences from 9821 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ATATCG_F2_filt.fastq.gz
+Encountered 13358 unique sequences from 30162 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_CTCGCA_F2_filt.fastq.gz
+Encountered 8640 unique sequences from 13521 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GCGCTC_F2_filt.fastq.gz
+Encountered 31 unique sequences from 36 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GTCTCT_F2_filt.fastq.gz
+Encountered 8084 unique sequences from 20516 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_TCGCAT_F2_filt.fastq.gz
+Encountered 22614 unique sequences from 55868 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACACAC_R1_filt.fastq.gz
+Encountered 5399 unique sequences from 18087 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACAGCA_R1_filt.fastq.gz
+Encountered 3626 unique sequences from 9062 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACATGT_R1_filt.fastq.gz
+Encountered 3616 unique sequences from 10294 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACGACG_R1_filt.fastq.gz
+Encountered 3909 unique sequences from 15271 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ATATCG_R1_filt.fastq.gz
+Encountered 1934 unique sequences from 4774 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_CTCGCA_R1_filt.fastq.gz
+Encountered 6406 unique sequences from 17619 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GCGCTC_R1_filt.fastq.gz
+Encountered 4230 unique sequences from 13164 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GTCTCT_R1_filt.fastq.gz
+Encountered 7176 unique sequences from 25170 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_TCGCAT_R1_filt.fastq.gz
+Encountered 6362 unique sequences from 18378 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACACAC_R1_filt.fastq.gz
+Encountered 2982 unique sequences from 7998 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACAGCA_R1_filt.fastq.gz
+Encountered 2037 unique sequences from 5068 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACATGT_R1_filt.fastq.gz
+Encountered 2037 unique sequences from 4779 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACGACG_R1_filt.fastq.gz
+Encountered 3100 unique sequences from 9343 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ATATCG_R1_filt.fastq.gz
+Encountered 2719 unique sequences from 6181 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_CTCGCA_R1_filt.fastq.gz
+Encountered 5218 unique sequences from 13018 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GCGCTC_R1_filt.fastq.gz
+Encountered 3945 unique sequences from 10514 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GTCTCT_R1_filt.fastq.gz
+Encountered 2519 unique sequences from 6043 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_TCGCAT_R1_filt.fastq.gz
+Encountered 19072 unique sequences from 57258 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACACAC_R1_filt.fastq.gz
+Encountered 3551 unique sequences from 6397 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACAGCA_R1_filt.fastq.gz
+Encountered 5262 unique sequences from 14525 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACATGT_R1_filt.fastq.gz
+Encountered 4401 unique sequences from 17144 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACGACG_R1_filt.fastq.gz
+Encountered 4323 unique sequences from 12003 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ATATCG_R1_filt.fastq.gz
+Encountered 3270 unique sequences from 10586 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_CTCGCA_R1_filt.fastq.gz
+Encountered 3822 unique sequences from 9869 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GCGCTC_R1_filt.fastq.gz
+Encountered 2402 unique sequences from 11843 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GTCTCT_R1_filt.fastq.gz
+Encountered 5541 unique sequences from 17766 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_TCGCAT_R1_filt.fastq.gz
+Encountered 2301 unique sequences from 7670 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACACAC_R1_filt.fastq.gz
+Encountered 4098 unique sequences from 11611 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACAGCA_R1_filt.fastq.gz
+Encountered 4476 unique sequences from 12396 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACATGT_R1_filt.fastq.gz
+Encountered 10711 unique sequences from 34503 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACGACG_R1_filt.fastq.gz
+Encountered 5977 unique sequences from 23406 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ATATCG_R1_filt.fastq.gz
+Encountered 4591 unique sequences from 12454 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_CTCGCA_R1_filt.fastq.gz
+Encountered 33 unique sequences from 36 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GCGCTC_R1_filt.fastq.gz
+Encountered 904 unique sequences from 3080 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GTCTCT_R1_filt.fastq.gz
+Encountered 8193 unique sequences from 24508 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_TCGCAT_R1_filt.fastq.gz
+Encountered 4055 unique sequences from 13323 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACACAC_R1_filt.fastq.gz
+Encountered 2653 unique sequences from 9300 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACAGCA_R1_filt.fastq.gz
+Encountered 4382 unique sequences from 9554 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACATGT_R1_filt.fastq.gz
+Encountered 2916 unique sequences from 8856 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACGACG_R1_filt.fastq.gz
+Encountered 4222 unique sequences from 13802 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ATATCG_R1_filt.fastq.gz
+Encountered 3572 unique sequences from 9412 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_CTCGCA_R1_filt.fastq.gz
+Encountered 3934 unique sequences from 10380 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GCGCTC_R1_filt.fastq.gz
+Encountered 14326 unique sequences from 52270 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GTCTCT_R1_filt.fastq.gz
+Encountered 23 unique sequences from 24 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_TCGCAT_R1_filt.fastq.gz
+Encountered 47 unique sequences from 50 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACACAC_R1_filt.fastq.gz
+Encountered 3128 unique sequences from 7069 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACAGCA_R1_filt.fastq.gz
+Encountered 2623 unique sequences from 8259 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACATGT_R1_filt.fastq.gz
+Encountered 19 unique sequences from 19 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACGACG_R1_filt.fastq.gz
+Encountered 2202 unique sequences from 6780 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ATATCG_R1_filt.fastq.gz
+Encountered 23 unique sequences from 25 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_CTCGCA_R1_filt.fastq.gz
+Encountered 8620 unique sequences from 27234 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GCGCTC_R1_filt.fastq.gz
+Encountered 30 unique sequences from 34 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GTCTCT_R1_filt.fastq.gz
+Encountered 8791 unique sequences from 25915 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_TCGCAT_R1_filt.fastq.gz
+Encountered 3529 unique sequences from 9086 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACACAC_R1_filt.fastq.gz
+Encountered 4324 unique sequences from 11205 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACAGCA_R1_filt.fastq.gz
+Encountered 6391 unique sequences from 17943 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACATGT_R1_filt.fastq.gz
+Encountered 2056 unique sequences from 8304 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACGACG_R1_filt.fastq.gz
+Encountered 1502 unique sequences from 7385 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ATATCG_R1_filt.fastq.gz
+Encountered 5769 unique sequences from 17263 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_CTCGCA_R1_filt.fastq.gz
+Encountered 4037 unique sequences from 8587 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GCGCTC_R1_filt.fastq.gz
+Encountered 20 unique sequences from 20 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GTCTCT_R1_filt.fastq.gz
+Encountered 3909 unique sequences from 13667 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_TCGCAT_R1_filt.fastq.gz
+Encountered 11196 unique sequences from 37328 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACACAC_R2_filt.fastq.gz
+Encountered 7658 unique sequences from 18087 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACAGCA_R2_filt.fastq.gz
+Encountered 4516 unique sequences from 9062 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACATGT_R2_filt.fastq.gz
+Encountered 4893 unique sequences from 10294 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ACGACG_R2_filt.fastq.gz
+Encountered 5836 unique sequences from 15271 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_ATATCG_R2_filt.fastq.gz
+Encountered 2445 unique sequences from 4774 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_CTCGCA_R2_filt.fastq.gz
+Encountered 8783 unique sequences from 17619 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GCGCTC_R2_filt.fastq.gz
+Encountered 5716 unique sequences from 13164 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_GTCTCT_R2_filt.fastq.gz
+Encountered 9209 unique sequences from 25170 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_A_TCGCAT_R2_filt.fastq.gz
+Encountered 8734 unique sequences from 18378 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACACAC_R2_filt.fastq.gz
+Encountered 3757 unique sequences from 7998 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACAGCA_R2_filt.fastq.gz
+Encountered 2571 unique sequences from 5068 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACATGT_R2_filt.fastq.gz
+Encountered 2840 unique sequences from 4779 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ACGACG_R2_filt.fastq.gz
+Encountered 4070 unique sequences from 9343 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_ATATCG_R2_filt.fastq.gz
+Encountered 3425 unique sequences from 6181 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_CTCGCA_R2_filt.fastq.gz
+Encountered 6846 unique sequences from 13018 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GCGCTC_R2_filt.fastq.gz
+Encountered 5250 unique sequences from 10514 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_GTCTCT_R2_filt.fastq.gz
+Encountered 3245 unique sequences from 6043 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_B_TCGCAT_R2_filt.fastq.gz
+Encountered 25892 unique sequences from 57258 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACACAC_R2_filt.fastq.gz
+Encountered 4495 unique sequences from 6397 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACAGCA_R2_filt.fastq.gz
+Encountered 7189 unique sequences from 14525 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACATGT_R2_filt.fastq.gz
+Encountered 6371 unique sequences from 17144 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ACGACG_R2_filt.fastq.gz
+Encountered 5897 unique sequences from 12003 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_ATATCG_R2_filt.fastq.gz
+Encountered 4807 unique sequences from 10586 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_CTCGCA_R2_filt.fastq.gz
+Encountered 4855 unique sequences from 9869 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GCGCTC_R2_filt.fastq.gz
+Encountered 4004 unique sequences from 11843 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_GTCTCT_R2_filt.fastq.gz
+Encountered 7856 unique sequences from 17766 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_C_TCGCAT_R2_filt.fastq.gz
+Encountered 3518 unique sequences from 7670 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACACAC_R2_filt.fastq.gz
+Encountered 5541 unique sequences from 11611 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACAGCA_R2_filt.fastq.gz
+Encountered 6062 unique sequences from 12396 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACATGT_R2_filt.fastq.gz
+Encountered 14608 unique sequences from 34503 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ACGACG_R2_filt.fastq.gz
+Encountered 8136 unique sequences from 23406 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_ATATCG_R2_filt.fastq.gz
+Encountered 6057 unique sequences from 12454 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_CTCGCA_R2_filt.fastq.gz
+Encountered 36 unique sequences from 36 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GCGCTC_R2_filt.fastq.gz
+Encountered 1335 unique sequences from 3080 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_GTCTCT_R2_filt.fastq.gz
+Encountered 10996 unique sequences from 24508 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_D_TCGCAT_R2_filt.fastq.gz
+Encountered 5891 unique sequences from 13323 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACACAC_R2_filt.fastq.gz
+Encountered 3489 unique sequences from 9300 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACAGCA_R2_filt.fastq.gz
+Encountered 5710 unique sequences from 9554 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACATGT_R2_filt.fastq.gz
+Encountered 3701 unique sequences from 8856 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ACGACG_R2_filt.fastq.gz
+Encountered 5212 unique sequences from 13802 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_ATATCG_R2_filt.fastq.gz
+Encountered 4557 unique sequences from 9412 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_CTCGCA_R2_filt.fastq.gz
+Encountered 4980 unique sequences from 10380 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GCGCTC_R2_filt.fastq.gz
+Encountered 19746 unique sequences from 52270 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_GTCTCT_R2_filt.fastq.gz
+Encountered 24 unique sequences from 24 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_E_TCGCAT_R2_filt.fastq.gz
+Encountered 50 unique sequences from 50 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACACAC_R2_filt.fastq.gz
+Encountered 3941 unique sequences from 7069 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACAGCA_R2_filt.fastq.gz
+Encountered 3509 unique sequences from 8259 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACATGT_R2_filt.fastq.gz
+Encountered 18 unique sequences from 19 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ACGACG_R2_filt.fastq.gz
+Encountered 3006 unique sequences from 6780 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_ATATCG_R2_filt.fastq.gz
+Encountered 23 unique sequences from 25 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_CTCGCA_R2_filt.fastq.gz
+Encountered 12116 unique sequences from 27234 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GCGCTC_R2_filt.fastq.gz
+Encountered 32 unique sequences from 34 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_GTCTCT_R2_filt.fastq.gz
+Encountered 11249 unique sequences from 25915 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_F_TCGCAT_R2_filt.fastq.gz
+Encountered 4689 unique sequences from 9086 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACACAC_R2_filt.fastq.gz
+Encountered 5652 unique sequences from 11205 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACAGCA_R2_filt.fastq.gz
+Encountered 8757 unique sequences from 17943 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACATGT_R2_filt.fastq.gz
+Encountered 3009 unique sequences from 8304 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ACGACG_R2_filt.fastq.gz
+Encountered 2444 unique sequences from 7385 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_ATATCG_R2_filt.fastq.gz
+Encountered 8094 unique sequences from 17263 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_CTCGCA_R2_filt.fastq.gz
+Encountered 5671 unique sequences from 8587 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GCGCTC_R2_filt.fastq.gz
+Encountered 20 unique sequences from 20 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_GTCTCT_R2_filt.fastq.gz
+Encountered 5275 unique sequences from 13667 total sequences read.
+Dereplicating sequence entries in Fastq file: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601//filtered/Lib_G_TCGCAT_R2_filt.fastq.gz
+Encountered 15749 unique sequences from 37328 total sequences read.
+  |                                                                         |..................................                               |  52%
+  ordinary text without R code
+
+  |                                                                         |...................................                              |  55%
+label: dadaing (with options) 
+List of 1
+ $ message: logi FALSE
+
+  |                                                                         |.....................................                            |  57%
+  ordinary text without R code
+
+  |                                                                         |......................................                           |  59%
+label: saving to disk
+  |                                                                         |........................................                         |  61%
+  ordinary text without R code
+
+  |                                                                         |.........................................                        |  64%
+label: merging pairs
+  |                                                                         |...........................................                      |  66%
+  ordinary text without R code
+
+  |                                                                         |............................................                     |  68%
+label: merging F and R (1)
+  |                                                                         |..............................................                   |  70%
+  ordinary text without R code
+
+  |                                                                         |...............................................                  |  73%
+label: merging F and R (2)
+  |                                                                         |.................................................                |  75%
+  ordinary text without R code
+
+  |                                                                         |..................................................               |  77%
+label: merging F and R (3)
+  |                                                                         |....................................................             |  80%
+  ordinary text without R code
+
+  |                                                                         |.....................................................            |  82%
+label: RemovingChimeras (with options) 
+List of 1
+ $ message: symbol F
+
+  |                                                                         |.......................................................          |  84%
+  ordinary text without R code
+
+  |                                                                         |........................................................         |  86%
+label: write colnames
+  |                                                                         |..........................................................       |  89%
+  ordinary text without R code
+
+  |                                                                         |...........................................................      |  91%
+label: tidying and writing
+  |                                                                         |.............................................................    |  93%
+  ordinary text without R code
+
+  |                                                                         |..............................................................   |  95%
+label: output_summary
+  |                                                                         |................................................................ |  98%
+  ordinary text without R code
+
+  |                                                                         |.................................................................| 100%
+label: merging with previous datasets
+
+output file: dada2.knit.md
+
+/usr/local/bin/pandoc +RTS -K512m -RTS dada2.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601/dada2_report.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/9x/m87hbr896xb8kbykq7xjpbzh0000gn/T//Rtmp3PzGrl/rmarkdown-str457938a08ce5.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+
+Output created: /Users/ramongallego/fastqs_demultiplexed_for_DADA2/demultiplexed_20190214_1601/dada2_report.html
