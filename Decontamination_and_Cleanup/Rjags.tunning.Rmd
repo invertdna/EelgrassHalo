@@ -1,0 +1,233 @@
+---
+title: "Rjags parameters"
+output: html_notebook
+---
+Adjusting rjags parameters to see how they affect the prob of presence of a particular ASV in the dataset
+
+The jags model feeds from two main sources: 
+
+  * The presence / absence matrix
+  
+  * The initial parameters for the true positive rate and the false positive rate
+  
+We can modify the matrix by subsetting the data and doing the detection of an ASV in a month or Site - and later keep all hashes that were true (prob of Occ > 0.8) for a Site or Month.
+
+We can modify the initial parameters by hard-coding a maximum value for the false positive rate; or by picking it up from a left-skewed beta distribution
+```{r}
+library(tidyverse)
+library(vegan)
+library(rjags)
+library(proxy)
+
+```
+
+
+
+### Change false positive rate 
+
+Do the Occupancy model with the p10 being drawn from a beta distribution with a shape 1,20.
+
+All tests run with data test.for.occ.modeling
+
+```{r}
+
+ASV.nested <- readRDS(file ="Cleaning.before.Occ.model")
+
+ASV.nested %>% 
+  unnest(Step2.tibble) %>% 
+  group_by(sample, Hash) %>% 
+  summarise (n = n()) %>% 
+  filter(n>1)
+
+
+ASV.nested %>% 
+  unnest(Step2.tibble) %>%
+  ungroup() %>% 
+  separate(sample, into = c(1:4,"rep", "run"), sep = "_") %>%
+  mutate(nReads = 1) %>% 
+  select(-Miseq_run) %>%
+  unite(1,2,3,4,6, col = "biol") %>% 
+  # group_by(biol, Hash, rep) %>% 
+  # summarise (n = n()) %>% 
+  # filter(n>1) %>% 
+  # ungroup() %>% 
+  # distinct(biol, rep)
+
+  spread(key = "rep", value = "nReads", fill= 0,drop = F) %>% 
+  group_by(Hash) %>% 
+  nest()   -> Nested.Hashes
+```
+Note: I had to run it several times until I realized that running an Occupancy model for each Hash in a matrix of 261 samples x 3 PCR replicates will take ~ 8 days. To get to that conclusion I run several tests which I have stored in a different Rmarkdown ("test.Occupancy.Rmd").
+
+My conclusions from that exercise are:
+
+  * It is better to run all Miseq runs at once
+  
+  * What matters is the pattern of replication, ie in how many biological replicates are there 3 presences in 3 technical replicates, how many 2 presences and how many only once. So we can summarise the pattern of presence of each Hash with a A.B.C pattern, which is how many times apears once, twice and three times. And we can run the model only once per replication pattern
+  
+  * When there are few presences in the dataset, the output of the model is extremely variable
+  
+So we will start by creating two objects, one is the nested dataframe that has the 261*3 matrices, and the other one is the reduced information with the pattern of replication
+```{r}
+Nested.Hashes %>% 
+  mutate(Ndetections = map (data,
+                            function(.y){
+                              .y %>%
+                                transmute(ndetections = A+B+C) %>%
+                                ungroup() %>% 
+                                group_by(ndetections) %>% 
+                                summarise(tot = sum(!is.na(ndetections)))})) -> Pattern.of.presence
+
+Pattern.of.presence %>% 
+  unnest(Ndetections) %>% 
+  spread(ndetections, tot,fill = 0) %>% 
+  unite(repetition.level,`1`,`2`,`3`, sep = ".") -> Pattern.of.presence # This is the list of the pattern of replication
+
+```
+
+
+
+
+
+
+Cool. So now that we have those two objects, let's see first what's the pattern of the repetition level
+
+```{r}
+
+Pattern.of.presence %>% 
+  group_by(repetition.level) %>% 
+  summarise(tot = n()) %>% 
+  arrange(desc(tot))
+
+
+```
+
+13481 Hashes only appear once in the dataset. 13481. Before we pick up the scissors and start trimming the data, can we check what's the average nReads per replicate of these fellas.
+
+```{r looking at the singletons}
+
+Pattern.of.presence %>% 
+  filter(repetition.level == "1.0.0") %>% 
+  pull(Hash) -> list.of.singletons
+
+ASV.nested %>% 
+  unnest(Step2.tibble) %>% 
+  filter (Hash %in% list.of.singletons) -> subset.of.singletons
+  
+
+
+breaks = c(seq(-0.5, 200, 10), seq(300,900, 100), seq(1000, 10000, 1000), 35000)
+
+bins = cut(subset.of.singletons$nReads, breaks)
+to.plot <- tibble(nReads = ceiling(head(breaks, -1)),
+                  count = sapply(split(subset.of.singletons$nReads, bins), length)) %>% 
+  mutate(bin.color = case_when(nReads < 50 ~ "Low",
+                               nReads < 500 ~ "Medium",
+                               TRUE         ~ "High"))
+# some key lines for better understanding of the graph
+h = 750
+i = 250
+to.plot %>% 
+  ggplot(aes(x = as.factor(nReads), y = count, fill = fct_relevel(bin.color, "Low", "Medium")))+
+  geom_col()+
+  geom_hline(aes(yintercept = h))+
+   geom_text(aes(2,h,label = h, vjust = -1))+
+  geom_hline(aes(yintercept = i), color = "brown")+
+  geom_text(aes(4,i,label = i, vjust = -0.5), color = "brown") +
+  labs(x= "nReads", 
+       fill = "nReads")+
+  theme(axis.text.x = element_text(angle = 45),
+        axis.ticks.x = element_blank())
+```
+
+Ok that seems like a lot. So what we will do here is to label the Hashes as with the Prob.of.Ocurrence and wait for the decission until we know if Taxonomy-wise they are actually a real thing.
+Now let's create the file for jags
+
+
+```{r}
+
+library(unmarked)  # Maximum likelihood estimation for SODMs 
+library(jagsUI)   # This library highjacks the function View
+source("functions.for.occ.model.r")
+
+sink("RoyleLink_prior.txt")
+										cat("model {
+										    # Priors
+										    psi ~ dunif(0,1)
+										    p11 ~ dunif(0.01,1)
+										    p10 ~ dunif(0.001, p10_max)
+										    
+										    # Likelihood 
+										    for (i in 1:S){
+										    z[i] ~ dbern(psi)
+										    p[i] <- z[i]*p11 + (1-z[i])*p10
+										    for (j in 1:K){
+										    Y[i,j] ~ dbern(p[i])
+										    }
+										    }
+										    } ",fill=TRUE)
+										sink()
+										
+										
+```
+There are 1k Occupancy models to run, so about 1500 secs, or 25 minutes
+
+```{r running Ocupancymodels, echo = F}
+Pattern.of.presence %>% 
+  group_by(repetition.level) %>% 
+  select(-`0`) %>% 
+  summarise(first = head(Hash, 1)) -> key.fromrep.to.hash
+
+key.fromrep.to.hash %>% 
+  pull(first) -> Hashes.to.run
+
+Nested.Hashes %>% 
+
+  filter(Hash %in% Hashes.to.run) %>% 
+ jags_for_presence(.) -> output.occ
+
+write_csv(output.occ, path  = "All.occ.output.csv")
+
+output.occ <- read_csv(file = "All.occ.output.csv")
+
+output.occ %>% 
+  left_join(Pattern.of.presence) %>% 
+  mutate(Hash = fct_reorder(Hash,`0`, .desc = T)) %>% 
+  arrange((`0`)) %>% 
+  ggplot(aes(x = `0`, y = model)) +
+  geom_smooth() +
+  geom_point(alpha = 0.3)
+  
+```
+
+
+```{r}
+output.occ %>% 
+  left_join(Pattern.of.presence) %>% 
+  select(repetition.level, model) -> output.occ
+
+
+ASV.nested %>% 
+  unnest(Step2.tibble) %>%
+  group_by(Hash) %>% 
+  nest() -> hashes.fate 
+
+hashes.fate %>% 
+  left_join(Pattern.of.presence) %>% 
+  left_join(output.occ) %>% 
+  mutate(occurrences = map_dbl(data,  
+                                 ~ summarise(.x,sum(nReads)) %>% pull()
+                           )) %>% 
+  mutate(fate = case_when(model > 0.85    ~  "Keep",
+                          model < 0.85 & occurrences < 200 ~ "Throw",
+                          TRUE ~ "Unknown")) -> hashes.fate 
+  
+hashes.fate %>%
+  filter(fate == "Throw")
+
+hashes.fate %>% 
+  select(Hash, model) %>% 
+  write_csv("Occ.fate.csv")
+
+```
+
