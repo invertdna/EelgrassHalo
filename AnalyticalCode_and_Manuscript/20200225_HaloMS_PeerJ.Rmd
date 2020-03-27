@@ -1,0 +1,870 @@
+---
+title: "A Halo of Reduced Dinoflagellate Abundances In and Around Eelgrass Beds"
+csl: unsrtnat
+output:
+  word_document: default
+  pdf_document:
+    citation_package: natbib
+    fig_caption: yes
+    keep_tex: yes
+    latex_engine: xelatex
+    number_sections: no
+    template: peerj_HALO.sty
+  html_document:
+    df_print: paged
+bibliography: HALOrefs
+---
+
+```{r loadLibraries_etc, echo=F, error=F, message=F, warning=F, include=F}
+options(repos = c(CRAN = "http://cran.rstudio.com"))
+#LOAD ALL PACKAGES and LIBRARIES
+requiredPackages <- c("tinytex", "vegan","plotrix","data.table", "gdata","lattice", "gridExtra", "readxl", "Biostrings", "ggmap", "xtable", "pander","RColorBrewer", "ggfittext", "treemapify", "kableExtra", "knitr", "RCurl", "corrplot", "imputeTS", "viridis", "ggpubr", "zoo", "geosphere", "mblm", "broom", "diagram", "tables", "bookdown", "PairedData", "mclust", "tidyverse", "dplyr")
+
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+
+# install.packages('tinytex')
+# tinytex::install_tinytex()
+
+go <- ipak(requiredPackages)
+```
+
+```{r loadFunctions_etc, echo=F, error=F, message=FALSE, warning=F, include=FALSE}
+#LOAD ALL FUNCTIONS
+#Take proportions from table of raw read counts with families/OTUs in rows, samples in columns
+PROP <- function(df) {sweep(df, MARGIN=2, colSums(df), FUN="/")}
+# a <- c(0, 1, 2)
+# b <- c(0, 2, 3)
+# c <- cbind(a, b)
+# PROP(c)
+
+#Take indices using a table with proportions of reads with families/OTUs in rows, samples in columns
+INDEX <- function(df) {sweep(df, MARGIN=1, STATS=apply(df, MARGIN = 1, max), FUN="/")}
+#INDEX(c)
+
+#remove all rows with sum of 0 from table with families/OTUs in rows, samples in columns. Included in many other functions. 
+ZERO.RM <- function(df) {df[rowSums(df) > 0, ]}
+
+#rareify data from a table of raw read counts with families/OTUs in rows, samples in columns
+RARE <- function(df) {df[rowSums(df) > 0, ] %>% 
+  t %>% 
+  rrarefy(min(colSums(df))) %>% 
+  t
+}
+
+#Define series of convenience variables
+SITE <- function(df) {
+  unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][1]))
+}
+POS <- function(df) {
+  unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][2]))
+}
+DIST <- function(df) {
+  unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][3]))
+}
+MONTH <- function(df) {
+  unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][4]))
+}
+RUN <- function(df) {
+  unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][6]))    
+}
+BOTTLE <- function(df) {
+  paste(unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][1])),
+        unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][2])),
+        unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][3])),
+        unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][4])),
+        #unlist(lapply(colnames(df), function (x) strsplit(x, "_")[[1]][6])),
+        sep = "_")
+}
+REP <- function(df) {
+  colnames(df)
+}
+
+# #Richness of rareified data with respect to a given convenience variable
+# RICH <- function(df, GROUPS) {t(df) %>%
+#     specnumber(groups = GROUPS)
+# }
+
+# create a distance matrix from df
+DISTMAT <- function(df, METHOD) {
+  as.matrix(vegdist(t(df), method=METHOD, diag=F, upper=F, binary=F))
+}
+
+#select eg and ba samples from file with samples as colnames (wide)
+EXTREMES <- function(df) {
+  dplyr::select(df, -contains("Al")) %>% 
+  dplyr::select(df, -contains("Ac")) 
+}
+
+#select any site or month from file with samples as colnames (wide)
+CHOOSE <- function(df, CHOICE)
+  dplyr::select(df, contains(CHOICE)) 
+
+#select any site or month from file with samples as colnames (wide)
+UNCHOOSE <- function(df, UNCHOICE)
+  dplyr::select(df, -contains(UNCHOICE)) 
+
+MULTIPLOT <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+```
+
+```{r loadData_etc, echo=F, error=F, message=FALSE, warning=F, include=FALSE}
+
+#LOAD DATA
+
+# LinKey <- read.csv("LineageLookupTable_HALO_20190213-2-FAMILY_min450.csv") %>% 
+#   select(-X) %>% 
+#   t() %>% 
+#   #as.data.frame() %>% 
+#   na.locf() %>% 
+#   t() %>% 
+#   as.data.frame() 
+#   #write.csv("LineageLookupTable_Full_HALO_20190213-2-FAMILY_min450.csv")
+
+# added in occasional upper division info. by hand - all were clear.   
+
+HashKey <- read.csv("data/Hash_Key_all_together.csv")
+
+FamKey <- read.csv("data/BLASTed_COI_HALO_20190213-2-FAMILY_min450.csv", col.names = c("Hash", "Family"))
+
+LineageKey <- read.csv("data/LineageLookupTable_Full_HALO_20190213-2-FAMILY_min450.csv")
+
+
+
+OTU <- read.csv("data/ASV_table_all_together.csv") %>% 
+  as.data.frame() %>% 
+  dplyr::select(-1)
+
+#replace hashes and combine reads for dinoflagellate taxa that need to be collapsed in order to avoid pseudoreplication (share AA sequence and genus)
+OTUCollapse <- OTU %>% 
+  mutate_if(is.factor, as.character) %>% 
+  #Heterocapsa 1
+  mutate_if(is.character, stringr::str_replace_all, pattern = "9c897c2bcfff8771c25403333a7e3950fcd2377d",    replacement = "49f3860c3bfcdf72fae55203367fb01a5a27ca53") %>% 
+  mutate_if(is.character, stringr::str_replace_all, pattern = "a0c95770fd6f94489af29b2a90487433120812c9",    replacement = "49f3860c3bfcdf72fae55203367fb01a5a27ca53") %>% 
+  #Heterocapsa 2
+  mutate_if(is.character, stringr::str_replace_all, pattern = "adcca6d32d0070fd5d63075d79551b05151c3cc7",    replacement = "2f5723a58d69dbcde6737abcbcb6e2a3d0455382") %>% 
+  #Hematodinium
+  mutate_if(is.character, stringr::str_replace_all, pattern = "43a90ce7e1cbecf3ef22fc713fc4a7324b2631b2",    replacement = "19ff76dc44fc872abc86ab446e637b082ede9e30") %>% 
+  #Gymnodinium 4
+  mutate_if(is.character, stringr::str_replace_all, pattern = "8c9dde2db5de7c711d08a6f16cca4ae46408f6a6",    replacement = "e1cae1c17ee4083ed6d280c12578fe98581c6fa6") %>% 
+  group_by(sample, Hash) %>% 
+  summarise(nReads = sum(nReads))
+  
+
+Hash <-  merge(x = OTU,
+                    y = HashKey,
+                    by = "Hash")
+
+Family <- merge(x = OTU,
+                    y = FamKey,
+                    by = "Hash") %>% 
+  group_by(sample, Family) %>% 
+  summarise(nReads = sum(nReads))
+
+
+Lineage <- merge(x = Family,
+                    y = LineageKey,
+                    by = "Family")
+
+# length(unique(OTUcount$Hash)) #3165
+# length(unique(FamKey$Family)) #118
+# length(unique(LinKeyFull$Family)) #87
+# length(unique(Familycount$Family)) #79
+# length(unique(Lineage$Family)) #60
+# length(unique(Lineage$Phylum)) #15
+```
+
+```{r MungeData_etc, echo=F, error=F, message=FALSE, warning=F, include=FALSE}
+#Spread Family and OTU tables
+OTUcount <- OTUCollapse %>% 
+  spread(value = nReads, key = sample, fill = 0) %>% 
+  column_to_rownames("Hash") %>% 
+  dplyr::select(-contains("Ac")) %>% 
+  dplyr::select(-contains("r4")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_A_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_B_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_C_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2"))  
+
+OTUindex <- OTUcount %>% 
+  na.replace(0) %>% 
+  PROP() %>% 
+  na.replace(0) %>% 
+  INDEX() %>% 
+  rownames_to_column("Hash") %>% 
+  filter(!is.na(CI_Al_1_Aug_A_r3)) %>% 
+  column_to_rownames("Hash")
+
+OTUindex.bottle <- OTUindex %>%
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("Sample") %>% 
+  gather(-Sample, key = "Hash", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%   
+  group_by(Hash, Site, Position, Month, Distance) %>%
+  summarise(Average = mean(Index)) %>% 
+  unite(c(Site, Position, Distance, Month), col = "Bottle", sep = "_") %>% 
+  spread(value = Average, key = Bottle, fill = 0) %>% 
+  column_to_rownames("Hash")
+
+#Spread tables with all information available to highest taxonomic level
+PhylumCount <- Lineage %>% 
+  dplyr::select(-X,-Kingdom,-Order,-Class,-Family) %>% 
+  group_by(sample, Phylum) %>% 
+  summarise(nReads = sum(nReads)) %>% 
+  spread(value = nReads, key = sample, fill = 0) %>% 
+  dplyr::select(-contains("Ac")) %>% 
+  dplyr::select(-contains("r4")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_A_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_B_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_C_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>%  
+  column_to_rownames("Phylum")
+  #remove NR, which has no transects?
+  #select_if(!grepl("NR", names(.))) 
+  
+PhylumIndex <- PhylumCount %>% 
+  na.replace(0) %>% 
+  PROP() %>% 
+  na.replace(0) %>% 
+  INDEX() %>% 
+  rownames_to_column("Phylum") %>% 
+  filter(!is.na(CI_Al_1_Aug_A_r3)) %>% 
+  column_to_rownames("Phylum")
+
+PhylumIndex.bottle <- PhylumIndex %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("Sample") %>% 
+  gather(-Sample, key = "Phylum", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%   
+  group_by(Phylum, Site, Position, Month, Distance) %>%
+  summarise(Average = mean(Index)) %>% 
+  unite(c(Site, Position, Distance, Month), col = "Bottle", sep = "_") %>% 
+  spread(value = Average, key = Bottle, fill = 0) %>% 
+  column_to_rownames("Phylum")
+
+#Spread family info. tables (for response to Reviewer 3's grazing question)
+FamilyCount <- Family %>% 
+  spread(value = nReads, key = sample, fill = 0) %>% 
+  column_to_rownames("Family") %>% 
+  dplyr::select(-contains("Ac")) %>% 
+  dplyr::select(-contains("r4")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_A_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_B_r2")) %>% 
+  dplyr::select(-contains("CI_Eg_0_Jul_C_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2")) %>% 
+  dplyr::select(-contains("PG_Ba_50_Jul_A_r2"))  
+
+FamilyIndex <- FamilyCount %>% 
+  na.replace(0) %>% 
+  PROP() %>% 
+  na.replace(0) %>% 
+  INDEX() %>% 
+  rownames_to_column("Family") %>% 
+  filter(!is.na(CI_Al_1_Aug_A_r3)) %>% 
+  column_to_rownames("Family")
+
+FamilyIndex.bottle <- FamilyIndex %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("Sample") %>% 
+  gather(-Sample, key = "Family", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%   
+  group_by(Family, Site, Position, Month, Distance) %>%
+  summarise(Average = mean(Index)) %>% 
+  unite(c(Site, Position, Distance, Month), col = "Bottle", sep = "_") %>% 
+  spread(value = Average, key = Bottle, fill = 0) %>% 
+  column_to_rownames("Family")
+
+```
+
+```{r loadDinoData_etc, echo=F, error=F, message=FALSE, warning=F, include=FALSE}
+DinoKey <- read.csv("data/Dino_key_Final.csv") %>% 
+  dplyr::select(-X) %>% 
+  drop_na() %>% 
+  dplyr::select(Hash, Family_Genus) %>% 
+  unique()
+
+DinoHash <- DinoKey$Hash
+
+#These were made after collapsing hashes for Dinos that appeared to be the same taxon (see OTUCollapse above)
+DinoCount <- OTUcount %>% 
+  rownames_to_column("Hash") %>% 
+  filter(Hash %in% DinoHash) %>% 
+  merge(DinoKey, by = "Hash") %>% 
+  dplyr::select(-Hash) %>% 
+  dplyr::select("Family_Genus", everything()) %>% 
+  column_to_rownames("Family_Genus")
+  
+DinoIndex <- OTUindex %>% 
+  rownames_to_column("Hash") %>% 
+  filter(Hash %in% DinoHash) %>% 
+  merge(DinoKey, by = "Hash") %>% 
+  dplyr::select(-Hash) %>% 
+  dplyr::select("Family_Genus", everything()) %>% 
+  column_to_rownames("Family_Genus")
+
+DinoIndex.bottle <- OTUindex.bottle %>% 
+  rownames_to_column("Hash") %>% 
+  filter(Hash %in% DinoHash) %>% 
+  merge(DinoKey, by = "Hash") %>% 
+  dplyr::select(-Hash) %>% 
+  dplyr::select("Family_Genus", everything()) %>% 
+  column_to_rownames("Family_Genus")
+
+
+```
+
+<!-- Emily Jacobs-Palmer^1^, Ramón Gallego^1,2,3^, Ana Ramón-Laca^2,4^, Emily Kunselman^5,6^, Kelly Cribari^1^, Micah Horwith^6^, Ryan Kelly^1^. -->
+
+<!-- 1. University of Washington School of Marine and Environmental Affairs, Seattle, WA. -->
+<!-- 2. National Oceanic and Atmospheric Administration Northwest Fisheries Science Center, Seattle, WA. -->
+<!-- 3. NRC Research Associateship Program, The National Academies of Sciences, Engineering, and Medicine, Washington, DC, United States. -->
+<!-- 4. Ocean Associates, Inc., Arlington, VA. -->
+<!-- 5. Scripps Institution of Oceanography, University of California, San Diego, La Jolla, CA, United States. -->
+<!-- 6. Washington State Department of Natural Resources, Olympia, WA.  -->
+
+<!-- Author Ana Ramón-Laca was employed by Ocean Associates, Inc. under contract to National Oceanic and Atmospheric Administration Northwest Fisheries Science Center, Seattle, WA. All other authors declare no competing interests -->
+
+<!-- # Abstract -->
+
+<!-- Seagrass beds provide a variety of ecosystem services, both within and outside the bounds of the habitat itself. Here we use environmental DNA (eDNA) amplicons to analyze a broad cross-section of taxa from ecological communities in and immediately surrounding eelgrass (*Zostera marina*). Sampling seawater along transects extending alongshore outward from eelgrass beds, we demonstrate that eDNA provides meter-scale resolution of communities in the field. We evaluate eDNA abundance indices for thirteen major phylogenetic groups of marine and estuarine taxa along these transects, finding highly local changes linked with proximity to *Z. marina* for a diverse group of dinoflagellates, and for no other group of taxa. Eelgrass habitat is consistently associated with dramatic reductions in dinoflagellate abundance both within the contiguous beds and for at least fifteen meters outside, relative to nearby sites without eelgrass. These results are consistent with the hypothesis that eelgrass-associated communities have allelopathic effects on dinoflagellates, and that these effects can extend in a halo beyond the bounds of the contiguous beds. Because many dinoflagellates are capable of forming Harmful Algal Blooms (HABs) toxic to humans and other animal species, the apparent salutary effect of eelgrass habitat on neighboring waters has important implications for public health as well as shellfish aquaculture and harvesting. -->
+
+
+# Introduction
+
+Seagrass species are ecosystem engineers throughout the world’s coastal zones [@jones1994organisms], generating and sustaining habitat for a multitude of associated taxa [@duffy2006biodiversity]. These marine macrophytes also provide a wide variety of essential ecosystem services that directly benefit humans, such as provision of nursery habitat for food species [@heck2003critical] and coastal protection through sediment accretion and stabilization [@potouroglou2017measuring; reviewed in @nordlund2016seagrass]. Additionally, seagrasses temporarily sequester carbon [@fourqurean2012seagrass], and have been predicted to serve as local buffers of pH, particularly for sensitive calcifying taxa under ocean acidification regimes [@hendriks2014photosynthetic, but see @cyronak2018short and @koweek2018expected]. Seagrass habitat is therefore a globally important resource, with far-reaching positive economic effects. 
+
+In addition to these broad ecological and chemical functions, such habitats demonstrate important antimicrobial properties. Seagrass meadows have been shown to reduce exposure to bacterial pathogens affecting humans and marine life, relative to areas lacking such meadows [@lamb2017seagrass]. Additionally, seagrass tissue itself is a source of diverse secondary metabolites capable of killing bacteria responsible for a variety of serious infections [e.g. @kannan2010antibacterial; reviewed in @zidorn2016secondary]. Finally, specific bacteria associated with seagrasses are known to kill or inhibit the growth of taxa that produce harmful algal blooms (HABs) [e.g. @inaba2017algicidal, reviewed in @imai2015interactions], which can cause shellfish poisoning, fish kills, and mass de-oxygenation events, among other detrimental effects [reviewed in @grattan2016harmful;@hallegraeff2017review;@rabalais2014eutrophication, respectively]. Thus, the antimicrobial properties of seagrass and associated organisms also yield benefits for human and local ecosystem health.
+
+Eelgrass (*Zostera marina*) is the dominant seagrass along temperate coasts of the Northern Hemisphere [@short2007global]. Recent worldwide declines in this species and other seagrass taxa are alarming [@orth2006global; but see @shelton2017forty], and have been met with local protection measures in some cases, such as designation of seagrass as a 'Habitat Area of Particular Concern' [@NOAAHAPC], as well as a 'Vital Sign' indicator species [@vital], and are the object of 'no net loss' policies [@calieelgrass]. Frequently, a tradeoff between eelgrass and aquaculture is presumed when eelgrass habitat and associated conservation efforts compete with shellfish seeding grounds [@hosack2006habitat;@dumbauld2015effect]; depending on the specific practices used to plant and harvest shellfish, such aquaculture can cause significant physical and ecological disturbance to eelgrass beds [@tallis2009oysters]. However, bivalves are in fact often proximally associated with seagrass even in the absence of aquaculture, and mutualisms between the two groups have been described [@peterson2001positive;@van2012three, but see @kelly2007native]. For these reasons, the effects of eelgrass habitat on the abundance of shellfish and associated species are of particular interest in the region of study, and in the many locations worldwide where members of these taxa co-occur. 
+
+Given the critical functions of seagrass globally and *Zostera marina* eelgrass locally, we aimed to characterize the biological community associated with this ecosystem engineer, comparing the presence and relative abundance of organisms within contiguous beds to points along transects extending outward to bare substrate. Although there is an existing literature on eelgrass communities, such studies often maintain a relatively narrow taxonomic focus and do not make explicit comparisons with immediately adjacent habitat types, perhaps owing to the survey methodology available [e.g. @nelson1979analysis;@nelson1997interannual]. Here we use environmental DNA (eDNA) metabarcoding with universal eukaryotic primers to quantify *Zostera marina*-associated changes across hundreds of taxa simultaneously at five sites and three time-points within the estuarine waters of Washington State, USA. Because of the close ties between shellfish and eelgrass in the study region, we predict that *Zostera marina* habitat may modulate the relative abundance of shellfish and/or associated planktonic organisms, in particular, although our methods are capable of identifying significant changes across a diversity of organisms from over a dozen eukaryotic phyla.
+
+# Methods
+
+## Environmental DNA sample collection
+
+Environmental DNA sequenced at a single genetic locus can provide an assay of community composition consisting of many taxa. The design of the particular PCR primers used largely determines the taxonomic composition, but it is not uncommon to sequence hundreds of taxa from dozens of phyla in a given sampling effort. Here, we targeted a ca. 313 bp fragment of COI using a primer set [@leray2013new] known to amplify a broad range of marine taxa including diatoms, dinoflagellates, metazoans, fungi, and others; this primer set is broadly used in ecological applications sampling dozens of phyla simultaneously \citep[e.g.,][]{leray2015dna} as well as those concerned with specific taxonomic groups of interest \citep[e.g.,][]{gibson2014simultaneous}. 
+
+To determine the biological community composition within *Z. marina* beds and the surrounding habitat from eDNA, we sampled seawater from five sites in Puget Sound: Port Gamble, Case Inlet, Nisqually Reach, Skokomish, and Willapa Bay (Figure 1). We surveyed each location at three timepoints during late spring and summer, in May, July, and August of 2017. Specifically, we collected 1 liter of seawater using a bleach-cleaned plastic bottle held immediately under the water surface, within 0.6 m of the eelgrass canopy in a total water depth of 0.3-1 m. We collected samples from eelgrass (located at the approximate center of contiguous beds, 47-90 m inside the edge), from each point in a transect extending alongshore at 1, 3, 6, 10, and 15 m outside the edge of the contiguous beds, and from a final location over bare substrate (located 16-670 m outside the edge of the contiguous beds). The bed edge was defined as the point at which shoot density fell below 3 shoots/m^2^; see Figure S1 for a transect schematic and Table S1 for precise transect locations by site. All transects ran alongshore, with samples for a given transect gathered at a uniform tidal height (-1 to -3 feet mean lower low water level). Due to local geography and conditions, it was not always possible to gather all transect samples during each sampling event; a comprehensive list of samples gathered is given in Table S1. We kept samples on ice and in the dark until processing within 4 hours by filtering 500 mL from each sample under vacuum pressure through a cellulose acetate filter with 47-mm diameter and 0.45-$\mu$m pore size and stored the filter at room temperature in Longmire’s buffer [@renshaw2015room]. The final dataset consisted of 84 water samples.
+
+```{r FIG1_SITEMAP, echo=F, message=FALSE, warning=FALSE, include = F}
+
+#FINAL MAP CREATED FROM SHAPE FILES (RPK); below code was initial map using ggmap. 
+
+# devtools::install_github("dkahle/ggmap")
+# 
+# lats<-c(47.848, 47.3584, 47.1019, 47.3543, 46.5395)
+# longs<-c(-122.5829, -122.7965, -122.7268, -123.1566, -123.9888)
+# sitenames<-c("Port Gamble (PG)","Case Inlet (CI)", "Nisqually Reach (NR)", "Skokomish (SK)", "Willapa Bay (WB)")
+# 
+# 
+# register_google(key = "")
+
+
+# ### Get a map
+# map <- get_googlemap(center = c(lon = mean(longs), lat = mean(lats)), zoom = 8,
+#                maptype = "satellite", source = "stamen", key = "")
+# 
+# FIG1 <- ggmap(map) +
+# 	geom_point(data=data.frame(lats,longs),
+# 	           aes(x=longs, y=lats),
+# 	           color = "grey",
+# 	           size=2) +
+# 	geom_text(data=data.frame(lats,longs, sitenames),
+# 	          x=c(-122.5829, -122.5, -122.6, -123.3, -123.9888),
+# 	          y=lats-.1,
+# 	          label=sitenames,
+# 	          fontface = "bold",
+# 	          size=3,
+# 	          color = "gray") +
+# 	theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
+#   #ylim(c(46.25, 48.5)) +
+# 	xlab("Longitude") +
+# 	ylab("Latitude")
+
+
+# tiff("Fig11.tiff", units="cm", width=12, height=12, res=300)
+  # FIG1
+# dev.off()
+```
+
+## Extraction and amplification
+
+To extract DNA from the sample filters, we used a phenol:chloroform:isoamyl alcohol protocol [@renshaw2015room]. We incubated filter membranes at 65\degree C for 30 min before adding 900 $\mu$L of phenol:chloroform:isoamyl alcohol and shaking vigorously for 60 s. We conducted two consecutive chloroform washes by centrifuging at 14,000 rpm for 5 min, transferring the aqueous layer to 700 $\mu$L chloroform, and shaking vigorously for 60 s. After a third centrifugation, 500 $\mu$L of the aqueous layer was transferred to tubes containing 20 $\mu$L 5 molar NaCl and 500 $\mu$L 100% isopropanol, and frozen at $-$20\degree C for approximately 15 h. Finally, all liquid was removed by centrifuging at 14,000 rpm for 10 min, pouring off or pipetting out any remaining liquid, and drying in a vacuum centrifuge at 45\degree C for 15 min. We resuspended the eluate in 200 $\mu$L water, and used 1 $\mu$L of diluted DNA extract (between 1:10 and 1:400) as template for PCR.
+
+To survey the eukaryotic organisms present in our samples, we ran and sequenced in triplicate PCR reactions from each of the 84 biological samples to distinguish technical from biological variance. To sequence many samples and their replicates in a single run while avoiding amplification bias due to index sequence, we followed a two-step PCR protocol [@o2016indexed]. In the first step, we used a PCR reaction containing 1X HotStar Buffer, 2.5 mM MgCl2, 0.5 mM dNTP, 0.3 $\mu$M of each primer, and 0.5 units of HotStar Taq (Qiagen Corp., Valencia, CA, USA) per 20 $\mu$L reaction. The PCR protocol for this step consisted of 40 cycles, including an annealing touchdown from 62\degree C to 46\degree C (-1\degree C per cycle), followed by 25 cycles at 46\degree C. In the second step, following the 2-step PCR protocol given in @o2016indexed, we added 6 base-pair nucleotide tags to both ends of our amplicons prior to sequencing, allowing us to sequence multiple samples on the same MiSeq run. We allowed for no sequencing error in these tags; only sequences with identical tags on both the forward and reverse read-directions survived quality control. This gave us high confidence in assigning amplicons back to individual field samples. 
+
+Finally, we generated amplicons with the same replication scheme for positive controls, comprised of extractions from either kangaroo (genus *Macropus*) or ostrich (genus *Struthio*) tissue. We selected these organisms because they are absent from the sampling sites and common molecular biology reagents, but amplify well with the universal primer set used in this study. Additionally, they can be used to identify possible cross-contamination: reads from other taxa that appear in these positive control samples allow us to estimate and account for the proportion of sequences that are present in the incorrect PCR reaction (see Bioinformatics below). We also amplified negative controls (molecular grade water) in triplicate alongside environmental samples and positive controls, and verified by gel electrophoresis that these PCR reactions contained no appreciable amount of DNA.
+
+## Sequencing
+
+To prepare libraries of replicated, indexed samples and positive controls, we followed manufacturers’ protocols (KAPA Biosystems, Wilmington, MA, USA; NEXTflex DNA barcodes; BIOO Scientific, Austin, TX, USA). We then performed sequencing on an Illumina MiSeq (250-300 bp, paired-end) platform in four different sets of samples: two MiSeq V.2 runs and two MiSeq V.3 runs. We processed each batch separately through the initial bioinformatics analysis (see below). We employed hierarchical clustering on transects containing six PCR replicates sequenced across two different runs (three technical replicates per run derived from the same sampled bottle of water) and found that these samples were each others’ nearest neighbors (Figure S2); thus sequencing-run-level effects were negligible and we combined the data from the four sequencing runs.
+
+## Bioinformatics
+
+We followed updated versions of previously published procedures for bioinformatics, quality control, and decontamination [@kelly2018effect]. This protocol uses a custom Unix-based script [@monchoscript] calling third-party programs to perform initial quality control on sequence reads from all four runs combined, demultiplexing sequences to their sample of origin and clustering unique variants into amplicon sequence variants (ASVs) [@martin2011cutadapt;@callahan2016dada2]. The output is a dataset including counts of each ASV per PCR replicate; ~28M sequence reads from 19370 ASVs emerged from this step. 
+
+To address possible cross-sample contamination [see @schnell2015tag;@kelly2018effect], we subtracted the maximum proportional representation of each environmental ASV across all positive control samples (sequenced from extraction of kangaroo or ostrich tissue) from the respective ASV in field samples; 27 million reads from 19320 ASVs passed this step. After removing the two PCR replicates with an extremely low number of reads, we estimated the probability of ASV occurrence by performing site-occupancy modeling [@royle2006generalized;@lahoz2016statistical]. Following Lahoz-Monfort et al. (2016) and using the full Bayesian code for package rjags [@rjags] provided by those authors, we modeled the probability of occupancy (i.e., true presence) for each of the unique sequence variants in our dataset. We treated replicate PCR reactions of each water bottle as independent trials, estimating the true-positive rate of detection (P$_{11}$), false-positive rate (P$_{10}$), and commonness (psi) in a Bayesian binomial model. We then used these parameters to estimate the overall likelihood of occupancy (true presence) for each ASV; those with low likelihoods (<20%) were deemed unlikely to be truly present in the dataset, and therefore culled. 25 million reads from 3143 ASVs survived this step. 
+
+Lastly, we removed samples whose PCR replicates were highly dissimilar: we calculated the Bray-Curtis dissimilarity amongst PCR replicates from the same bottle of water and discarded those with distance to the sample centroid outside a 95% confidence interval. Of 84 bottles of water collected, 3 technical replicates survived QC in 72 cases (86%), 2 replicates in 9 cases (11%), 1 replicate in 2 cases (2%), and zero replicates in a single case (1%) (Table S1). The final dataset of 24 million reads from 3142 ASVs comprised 83% of the original sequence reads.
+
+All bioinformatic and analytical code is included in GitHub repositories [@monchoscript;@rpkgithub], and provides the details of parameter settings in the bioinformatics pipelines used. Sequence and annotation information are included as well, and the former are deposited and publicly available in on the NCBI sequence read archive (SRA accession PRJNA606519).
+
+
+## Taxonomy
+
+To assign taxonomy to each ASV sequence, we followed the protocol detailed in @kelly2018effect. Briefly, this protocol uses 'blastn' [@camacho2009blast] on a local version of the full NCBI nucleotide database (current as of February 13, 2019), recovering up to 100 hits per query sequence with at least 85% similarity and maximum e-values of $10^{-30}$ (culling limit = 5), and reconciling conflicts among matches using the last common ancestor approach implemented in MEGAN 6.4 [@huson2016megan]. Within MEGAN, we imposed an additional more stringent round of quality control to ensure sufficient similarity between query and database sequences by requiring a bit score of at least 450 (ca. 90%  identical over the entire 313-bp fragment). Of the 24 million total reads in our dataset, we were able to annotate 4.1 million to the level of phylum or lower; the majority of the remaining reads had no BLAST hits meeting our criteria (7.6 million) or else did not receive taxonomic assignment due to insufficient similarity or conflicting BLAST hits  (12.1 million). We use the annotated sequences in our taxonomic analyses below.
+
+Our analysis revealed strong habitat associations for dinoflagellates and not for other taxa (see Results). To examine patterns specifically within the phylum Dinoflagellata, we further refined our annotations for these ASVs. Specifically, we considered the geographic range of taxa involved (restricting possible annotations to those taxa known from the North Pacific) and assigned taxonomy conservatively to the level of family (and genus, when possible) only in cases of >95% sequence identity between the subject and query sequence; ASVs we could not confidently assign to the level of family we excluded from further analyses. Multiple dinoflagellate sequences with identical amino-acid translations occurred within *Heterocapsa*, *Kareniaceae*, *Gymnodinium*, and *Hemotodinium*; to avoid pseudoreplication, we treated these as a single taxonomic unit (this choice did not affect the trends or significance of results).
+
+
+## Statistical Analysis
+
+### Community Composition
+
+To confirm the spatial resolution of our eDNA communities, we used non-metric multidimensional scaling (nMDS) ordination of eDNA indices for all ASVs within each technical replicate [@port2016assessing]. To derive this index, we first normalized taxon-specific ASV counts into proportions within a technical replicate, and then transformed the proportion values such that the maximum across all samples is scaled to 1 for each taxon [@kelly2019understanding]. Such indexing improves our ability to track trends in abundance of individual taxa in time and space by correcting for both differences in read depth among samples and differences in amplification efficiency among sequences; mathematically, it is equivalent to the Wisconsin double-standardization for community ecology as implemented in the vegan package for R [@oksanen2013package]. Using this index, we generated a single Bray-Curtis dissimilarity matrix for sequenced transect samples from each unique site/month combination and performed ordinations for each using the metaMDS function of vegan [@oksanen2013package; @R-base] using a maximum of one-thousand random starts. We then created a single Bray-Curtis dissimilarity matrix for our entire dataset and apportioned variance by site, month, transect distance, and sample on the communities present using a PERMANOVA test (implemented with the adonis function in vegan [@oksanen2013package]). 
+
+
+### Taxon-Habitat Associations
+
+To examine the relative abundance of phyla in eelgrass habitat relative to bare substrate, we determined eDNA indices for the sum of sequences within each phylum at the two transect extremes (within-eelgrass vs. bare), calculating a relative eDNA abundance measure by subtracting the mean eDNA abundance index over bare substrate for each site-month combination from the corresponding mean eDNA abundance index in the eelgrass habitat. Positive values of this measure thus denote higher abundance in eelgrass, while negative values of this index indicate higher abundance over bare substrate. To assess the statistical significance of these phylum-level differences between habitat types, we compared the distributions of mean eDNA abundance indices for individual phyla in samples taken from eelgrass relative to their counterparts taken over bare substrate, using a paired Wilcoxon signed-rank test with Bonferroni correction for multiple comparisons.
+
+
+### Dinoflagellate Distributions
+
+To resolve the fine-scale patterns of dinoflagellates with respect to eelgrass, we focused on transects in which individual dinoflagellate taxa had overall high-abundance. To identify these transects, we took the grand mean of dinoflagellate taxon-specific eDNA indices for each technical replicate along transects at a given time and place, and used the k-means function of the R stats package [@R-base] with k = 2 to separate transects from all present dinoflagellate taxa into two groups, high- and low-abundance, using unsupervised machine learning (Figure S3). Plotting data for individual taxa across transects for each site-month revealed episodic abundance of dinoflagellate sequences in time and space, as expected (Figure S4). A phylogeny built of dinoflagellate taxa from the high-abundance transects (Figure S5) confirmed that family- and genus-level taxonomic groups occupied monophyletic clades.
+
+Eight transects identified by unsupervised clustering indicate high-abundance events. For these focal transects, we first compared the eelgrass habitat and bare substrate using a paired Wilcoxon signed-rank test of mean eDNA abundance index for each dinoflagellate taxon (here, having identified sequences to the level of family or genus, rather than grouping dinoflagellates together, as we have done above). Next, to determine whether dinoflagellate abundance measures at intermediate alongshore transect samples (1, 3, 6, 10, and 15 m) were more closely associated with eelgrass habitat or bare substrate, we additionally performed Gaussian mixture modelling with two groups [@scrucca2016mclust]. We then used a Wilcoxon rank-sum test to assess the significance of differences in the dinoflagellate eDNA abundance index distribution in the two groups produced by model-based clustering. To ensure that these groups did not result simply from spatial autocorrelation, we calculated Bray-Curtis dissimilarity based on eDNA abundance indices of all ASVs from adjacent points on each full transect. We tested the null hypothesis that spatial distance does not significantly influence Bray-Curtis dissimilarity using a Kruskall-Wallace test.
+
+# Results
+
+## Community Composition
+
+We assigned over 3,000 unique ASVs to thirteen eukaryotic phyla comprising a diverse set of single- and multicellular taxa including Arthropoda (arthropods), Annelida (annelid worms), Bacillariophyta (diatoms), Chlorophyta (green algae), Chordata (chordates), Cnidaria (cnidarians), Dinoflagellata (dinoflagellates), Echinodermata (echinoderms), Heterokonta (stramenopiles), Mollusca (molluscs), Nemertea (ribbon worms), Ocrophyta (brown algae), and Rhodophyta (red algae). This represents a broad – although by no means comprehensive – survey of eukaryotic communities in and around our sampled eelgrass beds.
+
+Ordination via nMDS revealed consistent differentiation between eDNA communities across transects within a sampling site and date; technical replicates consistently clustered together. An example plot of samples gathered along the transect from eelgrass to bare substrate at Willapa Bay in July (Figure 2; all site/date plots shown in Figure S7) shows that the eelgrass community is quite dissimilar from other transect points along both axes. Moving away from eelgrass, most technical replicates of each sample bottle are fully distinguishable from those of other sample bottles (non-overlapping in ordination). For the instances in which complete transects were sampled at a given time and place (10) and all three technical replicates of a sample were available for analysis (60), 44 samples (73%) were similarly non-overlapping in ordination with all remaining transect points, demonstrating that despite proximity at the scale of meters, bottles of water contained eDNA evidence of distinct biological communities the majority of the time. Put differently, within-sample variance (reflecting laboratory-driven processes) was smaller than between-sample variance (reflecting biological as well as laboratory processes), hence providing resolution of communities at the scale of meters.
+
+```{r FIG2_NMDS, echo = F, message = F, warning = F, include = F}
+
+# To evaluate the ability of eDNA technology to resolve differences in community composition at the spatial scale of meters along our transects, we employed non-metric multidimensional scaling (NMDS). Specifically, we used OTU counts to generate a single Bray-Curtis distance matrix for all technical replicates of biological samples gathered along a full transect in each site and month combination from our dataset. We performed ordination of these community dissimilarity matrices with the metaMDS function of the Vegan package in R (@REFREF) using a maximum of one-thousand random starts. 
+
+NMDS <- function(df) {
+  df <- metaMDS(df, diag=T, upper.tri=T, trymax=1000, trace=0)
+  df <- data.frame(OTU.count = scores(df))
+}
+
+PLOT.NMDS <- function(df, COLOR, FILL, GROUP, LABEL) {
+ggplot(data = df, 
+       aes(x = OTU.count.NMDS1,
+           y = OTU.count.NMDS2,)) +
+  geom_polygon(aes(fill = FILL,
+                   group = GROUP,
+                   color = "gray80"
+                   ),
+               alpha = .7) +
+              scale_fill_manual(values = c("white", "darkgoldenrod4", "darkolivegreen3")) +
+              scale_color_manual(values = c("gray80", "gray80", "gray80", "gray80", "gray80", "gray80", "gray80")) +
+              scale_size_manual(values = c(0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001)) +
+              #scale_fill_discrete(breaks=c("Eg","Al","Ba")) + #cannot figure out how to combine these...
+    theme_bw() +
+    # theme(panel.border = element_rect(colour = "black", fill=NA)) +
+    # theme(panel.background = element_rect(fill = "gray80")) +
+    theme(legend.position = "none") +
+    #theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    coord_fixed() +
+  geom_text(data = df,
+            aes(x = OTU.count.NMDS1,
+                y = OTU.count.NMDS2,
+                label = LABEL),
+            alpha = 1,
+            size = 2) +
+  xlab("Dissimilarity axis 1") +
+  ylab("Dissimilarity axis 2") 
+}
+
+OTU.WB.Jul.bray <- CHOOSE(OTUindex, "WB") %>%
+  CHOOSE("Jul") %>%
+  filter(rowSums(.)>0) %>%  #rpk added, because otherwise this crashes w missing data
+  DISTMAT("bray")
+OTU.WB.Jul.bray.nmds <- NMDS(OTU.WB.Jul.bray)
+
+OTU.WB.Jul <- CHOOSE(OTUindex, "WB") %>% 
+  CHOOSE("Jul") %>% 
+  filter(rowSums(.)>0)
+position <- POS(OTU.WB.Jul)
+bottle <- BOTTLE(OTU.WB.Jul)
+month <- MONTH(OTU.WB.Jul)
+distance <- DIST(OTU.WB.Jul) %>% 
+  str_replace_all("10", "ten") %>% 
+  str_replace_all("50", "Ba") %>% 
+  str_replace_all("0", "Eg") %>% 
+  str_replace_all("ten", "10")
+
+
+FIG2 <- PLOT.NMDS(OTU.WB.Jul.bray.nmds, COLOR = position, FILL = position, GROUP = bottle, LABEL = distance)
+
+tiff("Fig22.tiff", res=500) #WHERE IS THIS???
+FIG2
+dev.off()
+
+ggsave("Fig22.png", plot = FIG2, device = "png", dpi = "print")
+
+
+
+```
+
+
+```{r CALC_PERMANOVA, echo=F, message=FALSE, warning=F, include = F}
+
+# We then performed a PERMANOVA test (implemented with the adonis function of the Vegan package (REFREF)) to determine the significance of variance from site, month, transect distance, and sample on the communities present, using a single Bray-Curtis distance matrix generated from all technical replicates of each biological sample. 
+
+OTU.choice <- OTUcount %>% 
+  as.data.frame() %>%
+  PROP() %>% 
+  INDEX() %>% 
+  filter(rowSums(.)>0) #rpk added
+OTU.bray <- DISTMAT(OTU.choice, METHOD = "bray")
+
+month <- MONTH(OTU.choice)
+distance <- DIST(OTU.choice)
+position <- POS(OTU.choice)
+site <- SITE(OTU.choice)
+bottle <- BOTTLE(OTU.choice)
+
+OTU.bray.adonis <- adonis(OTU.bray ~ site + month + distance + bottle)$aov.tab
+OTU.bray.adonis
+
+```
+
+
+PERMANOVA apportioned the variance in Bray-Curtis distance among samples as follows: site (R2 = 0.186, p = 0.001), month (R2 = 0.079, p = 0.001), and transect distance (R2 = 0.026, p = 0.001) each explain a significant portion of the variance in the dataset. Thus, despite strong effects of location and time, these results confirm that we can consistently distinguish nearshore eDNA communities (as sampled by our primers) at spatial scales of meters for each site and month of sampling. Moreover, we see a highly significant effect of proximity to eelgrass on the complement of organisms present.
+
+## Taxon-Habitat Associations
+
+To determine the habitat preference of major taxa in our dataset at a course spatial scale, we classified ASVs to the level of phylum and plotted an index of their relative sequence abundance in eelgrass versus bare positions (Figure 3). Positive indices denote greater abundance in eelgrass, and negative indices in bare substrate. Across all sites and months, only dinoflagellates show a consistent and strong bias towards one habitat or another; they are nearly universally more abundant over bare substrate. Indeed, the negative association of dinoflagellates with eelgrass beds is the only significant change in phylum-specific abundance between the two habitat extremes after Bonferroni correction for multiple comparisons (p = 0.004; paired Wilcoxon signed-rank test). Other single-celled microalgae such as diatoms (Bacillariophyta) and green algae (Chlorophyta) have no significant relationship with eelgrass.
+
+```{r FIG3_PHYLA, echo=F, message=FALSE, warning=F, include = F}
+
+df <- PhylumIndex.bottle %>% 
+  dplyr::select(-contains("WB_Ba_50_Aug")) %>%
+  dplyr::select(-contains("Ac")) %>%
+  dplyr::select(-contains("Al"))  %>%
+  rownames_to_column("Taxon") %>%
+  filter(Taxon != "Bacteroidetes") %>% 
+  filter(Taxon != "Metazoa") %>% 
+  gather(-Taxon, key = "Sample", value = "Average") %>%
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%
+  arrange(Taxon, Position)
+
+EGdf <- filter(df, Position == "Eg") %>% 
+  dplyr::rename("EGavg" = Average)
+BAdf <- filter(df, Position == "Ba") %>% 
+  dplyr::rename("BAavg" = Average) 
+EGBAdf <- bind_cols(EGdf, BAdf) %>% 
+  mutate(Diff = EGavg - BAavg) %>% 
+  dplyr::select(c(Taxon, Site, Month, Diff)) %>% 
+  group_by(Taxon) %>% 
+  mutate(Mean = mean(Diff))
+
+FIG3 <- ggplot(EGBAdf,
+       aes(x=reorder(Taxon, -Mean),
+           y=Diff,
+           fill = Mean)) +
+  geom_hline(yintercept=0) +
+  geom_violin(scale = "width", alpha = 1, lwd = .2) +
+  scale_fill_gradient2(low = "darkgoldenrod4", high = "darkolivegreen3", midpoint = 0) +
+  geom_jitter(width=0.2, alpha = 0.5, cex = .5) +
+  #geom_point(size = 1) +
+  geom_text(x = 13, y = -.375, label = "*", size = 8) +
+  theme_bw() +
+  #theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    theme(legend.position = "none",
+          plot.background = element_rect(fill = "transparent", color = NA),
+          axis.title=element_text(size=10)) +
+  xlab("Taxon") +
+  ylab("Relative Abundance Index (Eg-Ba)") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8))
+
+tiff("Fig33.tiff", units="cm", width=12, height=8, res=300) #WHERE IS THIS???
+  FIG3 
+dev.off()
+```
+
+```{r CALC_PREFWILCOX, echo=F, message=FALSE, warning=F, include = F}
+
+# To assess the statistical significance of differences in abundances of each phylum between habitat types, we compared the distributions of average eDNA indices for individual phyla in samples taken from eelgrass relative to their counterparts taken over bare substrate, using Wilcoxon signed rank tests with Bon Ferroni correction for multiple comparisons.
+
+WILPAIR <- function(df) {
+select(df, -contains("WB_Ba_50_Aug")) %>% 
+  select(-contains("Ac")) %>% 
+  select(-contains("Al"))  %>% 
+  na.replace(0) %>% 
+  rownames_to_column("Taxon") %>% 
+  gather(-Taxon, key = "Sample", value = "Average") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%   
+  mutate(Meters = as.numeric(Distance)) %>% 
+  arrange(Taxon, Position) %>% 
+  group_by(Taxon) %>% 
+  do(tidy(wilcox.test(.$Average ~ .$Position, paired=TRUE))) %>% 
+  select(variable = "Taxon", p.value) %>% 
+  filter(p.value < 0.05)
+}
+
+
+WILPAIR(PhylumIndex.bottle) #Dinoflagellata, annelida
+```
+
+## Dinoflagellate Distributions 
+
+When dinoflagellates are plentiful relative to background levels, it becomes possible to identify spatial trends in the abundance of individual taxa with respect to eelgrass habitat. To restrict our analysis to such periods, we used unsupervised machine learning (k-means clustering) to define a set of high- and low-abundance transects for each dinoflagellate sequence across all sites and months (Figure S3; between group sum of squares / total sum of squares = 67.7 %); eight transects from eight dinoflagellate taxa appeared in the high-abundance group. Their distributions are indeed highly local and episodic at the scale of our sampling, as expected (Figure S4). 
+
+```{r CALC_KMEANS, echo=F, message=FALSE, warning=FALSE, include = F}
+
+# Because plotting data for individual taxa across transects for each site-month revealed extremely episodic abundance of dinoflagellate sequences (Supplementary Figure X), we used unsupervised machine learning to separate high and low abundance transects across all taxa (Supplementary Figure Y). Specifically, we averaged taxon-specific eDNA indices for each technical replicate along transects at a given time and place, and subjected these means to kmeans clustering with two groups.  
+
+DinoKmean <- DinoIndex.bottle %>% 
+  select(-contains("NR")) %>% 
+  rownames_to_column("Taxon") %>% 
+  gather(-Taxon, key = "Sample", value = "Index") %>% 
+  separate(Sample, into = c("Site", "Position", "Distance", "Month"), remove = F) %>% 
+  unite(col = "transect", sep = "_", Site, Month) %>% 
+  filter(transect != "SK_May") %>% 
+  filter(transect != "WB_Aug") %>% 
+  group_by(transect, Taxon) %>%
+  summarise(Mean = mean(Index)) %>%
+  arrange(Taxon, transect) %>%
+  filter(Mean != 0) %>% #ADDED NEW STEP HERE TO FILTER OUT Transects with none of a dino taxon...
+  as.data.frame()
+
+fit <- kmeans(DinoKmean$Mean, 2)
+Cluster <- fit$cluster %>% 
+  as.data.frame() %>% 
+  rename("Group" = ".")
+DinoGroups <- cbind(Cluster, DinoKmean) %>% 
+  arrange(desc(Mean), desc(Group))
+
+```
+
+In this subset of high-abundance transects, the negative interaction of eelgrass and dinoflagellates is taxonomically universal. The taxa represented include two unique variants from the genus *Heterocapsa*, single variants from the genera *Karlodinium*, *Alexandrium*, *Protoceratium*, and *Gymnodinium*, and two Kareniaceae family variants of unknown genus, all of which contain known or suspected HAB species [@UNESCO]. All are also heavily biased towards bare substrate, relative to eelgrass (Figure 4; Wilcoxon signed-rank test, p < 0.002).
+
+
+```{r FIG4_DINOPREFS, echo=F, message=FALSE, warning=FALSE, include = F}
+
+df <- DinoIndex.bottle %>% 
+  dplyr::select(-contains("NR")) %>%
+  na.replace(0) %>% 
+  rownames_to_column("Taxon") %>% 
+  gather(-Taxon, key = "Sample", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%
+  unite(col = "transect", sep = "_", Site, Month) %>% 
+  filter(transect != "SK_May") %>% 
+  filter(transect != "WB_Aug") %>% 
+  group_by(transect, Taxon) %>%
+  mutate(Include = mean(Index)) %>%
+  subset(!Include < 0.2) %>%
+  filter(!Position == "Al") %>% 
+  arrange(Position, Taxon)
+
+Eelgrass <- subset(df,  Position == "Eg", Index,
+                 drop = TRUE)  
+
+Bare <- subset(df,  Position == "Ba", Index,
+                 drop = TRUE)  
+    
+EGdf <- filter(df, Position == "Eg") %>% 
+  dplyr::rename("Eelgrass" = Index)
+BAdf <- filter(df, Position == "Ba") %>% 
+  dplyr::rename("Bare" = Index)
+table <- cbind(EGdf, BAdf) %>% 
+  dplyr::select(-contains("1")) %>% 
+  mutate(Diff = Eelgrass - Bare) %>% 
+  dplyr::select(Diff, everything())
+
+FIG4 <- ggpaired(table, cond1 = "Eelgrass", cond2 = "Bare",
+         fill = c("darkolivegreen3", "darkgoldenrod4"),
+         ggtheme = theme_bw(),
+         xlab = "Habitat",
+         ylab = "eDNA abundance index",
+         ylim = c(0,1)) +
+         geom_text(x = 1.5, y = .9, label = "*", size = 8)
+
+tiff("Fig44.tiff", units="cm", width=10, height=10, res=300)
+  FIG4
+dev.off()
+```
+
+```{r CALC_DINOWILCOX, include = F, message = F, echo = F, warning = F}
+
+# Additionally, we performed a paired Wilcoxon signed-rank test comparing the distribution of average eDNA abundance indices for corresponding eelgrass and bare samples from each high-abundance transect. 
+
+df <- DinoIndex.bottle %>% 
+  select(-contains("NR")) %>%
+  na.replace(0) %>% 
+  rownames_to_column("Taxon") %>% 
+  gather(-Taxon, key = "Sample", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>%
+  unite(col = "transect", sep = "_", Site, Month) %>% 
+  filter(transect != "SK_May") %>% 
+  filter(transect != "WB_Aug") %>% 
+  group_by(transect, Taxon) %>%
+  mutate(Include = mean(Index)) %>%
+  subset(!Include < 0.14) %>%
+  filter(!Position == "Al") %>% 
+  arrange(Position, Taxon)
+
+wilcox.test(Index ~ Position, data = df, paired = TRUE) 
+
+#ANALYSIS AT INDIVIDUAL LEVEL WILL NOT WORK BECAUSE LIKE 3 POINTS PER EG/BA!!!
+#do(tidy(wilcox.test(.$Average ~ .$Position))) 
+
+```
+
+After demonstrating a preference of all dinoflagellate taxa towards the bare substrate extreme (when highly-abundant), we then characterized their patterns as a function of distance from the edge of the contiguous eelgrass beds, using data from entire transects (Figure 5). Examining all points alongshore -- and hence, controlling for substrate depth -- we found that dinoflagellate eDNA abundance indices at the 1, 3, 6, 10, and 15 m positions grouped with those at the eelgrass position but not the bare position in model-based clustering (Figure 5 "a" versus "b"). Additionally, the eDNA abundance index of all high-abundance dinoflagellate taxa at these six transect points together differed significantly from bare substrate (Wilcoxon signed-rank test, p < 0.02; Figure 5 "a" versus "b"). These patterns are not simply due to spatial autocorrelation, as overall Bray-Curtis dissimilarity (from all ASVs) shows no pattern associated with geographic distance across full transects (Figure S6; Kruskall-Wallis rank-sum test, p > 0.85).
+
+```{r FIG5_TRANS, message=FALSE, warning=F, echo = F, include = F}
+
+transect <- DinoIndex.bottle %>% 
+  dplyr::select(-contains("NR")) %>% 
+  rownames_to_column("Taxon") %>% 
+  gather(-Taxon, key = "Sample", value = "Index") %>% 
+  separate("Sample", into = c("Site", "Position", "Distance", "Month"), remove = F) %>% 
+  unite(col = "transect", sep = "_", Site, Month) %>% 
+  filter(transect != "SK_May") %>% 
+  filter(transect != "WB_Aug") %>% 
+  mutate(Meters = as.numeric(Distance)) %>% 
+  group_by(transect, Taxon) %>% 
+  mutate(Mean = mean(Index)) %>% 
+  filter(!Mean < 0.2) %>% 
+  arrange(Taxon)
+
+FIG5 <- ggplot(data = transect,
+               aes(x = as.factor(Meters),
+                   y = Index,
+                   fill = as.factor(Meters),
+                   #group = Meters
+                   )) +
+  geom_violin(scale = "width", alpha = 1, draw_quantiles = 0.5, lwd = .2) +
+  scale_fill_manual(values = c("darkolivegreen3", "white", "white", "white", "white", "white", "darkgoldenrod4")) +
+  geom_jitter(width=0.2, alpha = 0.5, cex = 0.5) +
+  scale_x_discrete(labels = c("Eg", "1", "3", "6", "10", "15", "Ba")) +
+  theme_bw() +
+  theme(legend.position = "none",
+    plot.background = element_rect(fill = "transparent",
+    color = NA), plot.title = element_text(size = 12)) +
+  #facet_wrap(df$Month) +
+  xlab("Transect Distance (m)") +
+  ylab("eDNA Abundance Index") +
+  ylim(c(0, 1)) +
+  geom_text(x = 3.5, y = 1.0, label = "a", size = 3) +
+  geom_text(x = 7, y = 1.0, label = "b", size = 3) +
+  geom_segment(aes(x = 1, y = .96, xend = 6, yend = .96), size = .35) +
+  geom_segment(aes(x = 6.5, y = .96, xend = 7.5, yend = .96), size = .35)
+
+tiff("Fig55.tiff", units="cm", width=12, height=8, res=300)
+  FIG5
+dev.off()
+
+```
+
+```{r CLUSTERING Distance Bins, include = F, message = F, echo = F, warning = F}
+forClustering <- transect %>% 
+  ungroup() %>% 
+  unite("Taxon", Taxon, transect) %>% 
+  select(Meters, Taxon, Index) %>% 
+  spread(key = Taxon, value = Index, fill = 0) %>% 
+  column_to_rownames("Meters") %>% 
+  as.data.frame() 
+  
+#model-based clustering
+mod.cluster<-Mclust(forClustering, G = 2) #given the above analysis, we are forcing 2 clusters, and making each distance bin belong to one or the other.
+  summary(mod.cluster)
+  mod.cluster$classification  #show cluster assignments
+  mod.cluster$z  #prob of assignment of each data point to cluster 1 vs. cluster 2
+  #plot(mod.cluster, what = "classification") #visualize, if desired
+
+#kruskal.test(forClustering[,1], g = c(1,rep(2,5),3))  #three groups are not signif different from one another (but this is tricky, because two of our groups here have only one member)
+wilcox.test(forClustering[,1], g = c(rep(1,6),2))  #two groups are signif different
+#?wilcox.test
+```
+
+# Discussion
+
+In a broad-spectrum eDNA survey of the organisms living in and near to eelgrass, we track the relative abundance of a diverse group of taxa from thirteen phyla. We demonstrate the ability of eDNA to distinguish communities represented in samples taken only meters apart, and to reveal a significant axis of variance based on proximity to habitat type, despite strong influences of geography and time across sampling events. One major and significant pattern emerges in our analysis: dinoflagellate taxa are more common over bare substrate than within eelgrass beds when highly-abundant, and this effect extends at least 15 m beyond the edge of the contiguous beds themselves. Because ours was an observational field study, rather than an experiment, we cannot rigorously distinguish among plausible mechanisms for the observed dinoflagellate distributions. Instead, we use the patterns in our own data as well as the relevant scientific literature to evaluate a number of potential hypotheses. 
+
+One plausible mechanism is that of an ecological edge effect acting in nearshore zones at the interface between eelgrass and non-eelgrass habitat. “Edge effects” are changes in the distribution or abundance of a species at a boundary between habitats (defined in @bostrom2011seascape and see, e.g., @ries2004predictive; @macreadie2010resource), or in a broader sense, these same effects across many species, observed at a community level. As patch size in a habitat decreases, edge effects become increasingly important factors influencing the distribution of a species. Here, we observe dinoflagellates at increased abundances in sites with bare substrate 16-670 m away from the edge of contiguous eelgrass beds, and not closer (1-15 m). If dinoflagellates were preferentially living at habitat edges, we would expect higher abundance of these taxa at intermediate distances. If, by contrast, the dinoflagellate pattern arose from a community-wide set of interactions in which eelgrass- and non-eelgrass-associated species overlap at habitat edges, we would expect to see community richness peak at or near the habitat boundary. We observe neither of these patterns in our data (Figure 5; Figure S9). 
+
+A second plausible mechanism is that slower flow-rates cause plankton deposition within eelgrass beds, but not outside (in parallel with sediment deposition \citep[e.g.,][]{potouroglou2017measuring}), such that planktonic cells are recovered at lower levels in our surface water samples. Here, too, we would expect to see a continuum of dinoflagellate abundance as a function of eelgrass thinning with distance from the contiguous beds, and we would expect this to be universal among planktonic species of roughly the same size. Instead, we observe a halo of lowered dinoflagellate abundance even when shoot densities are a few per square meter or lower, and do not see this same pattern for other single-celled algae such as taxa within the groups Chlorophyta or Bacillariophyta. Additionally, we recover eDNA from multiple benthic families (for example, Dendrasteridae, Tellinidae, and Veneridae). It therefore seems unlikely that physical factors driving particle deposition alone produce the observed pattern.
+
+A third possibility is that predatory taxa exist in greater abundance within eelgrass beds and thereby consume dinoflagellates in larger quantities within this habitat \citep[e.g., benthic macrofauna,][]{hosack2006habitat}. This mechanism appears unlikely for two reasons. First, many organisms that eat dinoflagellates also consume diatoms and other single-celled algae; as stated above, we do not observe the same patterns of reduced abundance in and around eelgrass beds for these other taxa. Additionally, a test of habitat associations at the family level reveals no predators of dinoflagellates with significantly higher abundance in eelgrass habitat relative to bare substrate.
+
+We find greater support for the hypothesis that allelopathy from within the eelgrass bed excludes dinoflagellates. A specific allelopathy against microalgal species by *Z. marina* was first described over 30 years ago [@harrison1985reductions]. More recent evidence suggests this negative interaction applies to multiple HAB taxa that cause paralytic or diarrhetic shellfish poisoning (including *Alexandrium*, a genus observed in this study), and is mediated locally by a variety of strains of eelgrass-associated algicidal and growth-inhibiting bacteria, particularly from *Erythrobacter*, *Teredinibacter*, *Gaetbulibacter*, and *Arthrobacter* genera [@inaba2017algicidal] (though the eDNA primers employed here amplify eukaryotes almost exclusively and therefore do not allow us to test this mechanism). However, in our dataset the repressive effect of eelgrass notably does not extend at the phylum level to other phytoplankton such as diatoms (Bacillariophyta) and green algae (Chlorophyta), despite reports that *Z. marina* habitat can deter members of these taxa as well (reviewed in @gross2003allelopathy). If we are witnessing patterns associated with an allelopathic interaction between microalgae and eelgrass mediated by bacterial species, it is possible that local variation in the  *Z. marina* microbiome (such as that described in @bengtsson2017eelgrass) could produce disparate patterns for various microalgal community members. Regardless of mechanism, the taxonomically broad pattern of lowered dinoflagellate abundance within contiguous eelgrass beds and in a halo of influence up to 15 m in radius surrounding the habitat demands explanation.
+
+Dinoflagellates with consistent patterns of abundance decrease within and around eelgrass habitat in our dataset include species from the genera *Heterocapsa*, *Alexandrium*, *Karlodinium*, *Protoceratium*, *Gymnodinium* and unknown taxa from the Kareniaceae family, each of which have at least one member included in local microscopy-based monitoring programs [@soundtoxins;@king]; our eDNA methodology thus agrees broadly with previous visual identification of microalgae in this region. Of particular interest are dinoflagellate taxa that include HAB-forming members: the resident species of *Alexandrium* (*A. catanella*) causes paralytic shellfish poisoning via production of saxitoxin (STX; @wiese2010neurotoxic), species from the genus *Protoceratium* (e.g. *P. reticulatum*) produce yessotoxins (YTXs), whose effects on human consumers of contaminated shellfish are complex and unclear (reviewed in @tubaro2010yessotoxins), and some species within the family Kareniaceae produce ichthyotoxic karlotoxins (@bachvaroff2008characterization). Saxitoxin, yessotoxins, and karlotoxins impact aquaculture and harvest industries directly; detection of STX at concentrations greater than 80 $\mu$g STXequiv/100 g is routinely responsible for regional harvest closures [@moore2009recent], shellfish containing more than 0.1 $\mu$g YTX equiv/100g may not be sold to markets within the European Union, although this toxin is not currently regulated within the US [@trainer2013diarrhetic], and karlotoxins can cause millions of dollars in losses for fisheries in single bloom events [@hallegraeff2017review]. In summary, the dinoflagellate taxa with low abundance in and around eelgrass habitat in this study have high relevance for local shellfish management decisions, particularly as HABs (including *Alexandrium*) are intensifying with recent ocean warming in the North Pacific [@gobler2017ocean], and are associated with an increase in the number of shellfish harvesting closures [@trainer2003paralytic;@moore2009recent].
+
+# Conclusions
+
+In order to understand the relationship of *Z. marina* to ecosystem and human health, as well as to shellfish farming and harvest, it is critical to consider our addition of a possible ‘action-at-a-distance’ element to the existing eelgrass-dinoflagellate interaction model. Given the protected status of *Z. marina* habitat on the Pacific Coast of the United States, the goals of the shellfish industry and eelgrass conservation are often perceived as being in conflict [@forrest2009bivalve] and policies prohibit shellfish farming and harvesting within or near beds. For example, in Washington State, required buffer zones between shellfish aquaculture and eelgrass range from 3 to 8 m, depending on the agency involved [@shellfish2017report]. However, our work demonstrates that *Z. marina* habitat may have a protective effect against harmful dinoflagellates within these buffer zones, reducing the potential for shellfish to accumulate HAB toxins from the surrounding waters. Likewise, filter feeders can mitigate microbial disease in adjacent environments, and *Magallana* (*Crassostrea*) *gigas*, in particular, has recently been shown to lessen the effects of eelgrass wasting disease (EWD) on *Z. marina* [@groner2018oysters]. Eelgrass and oysters may thus provide critical support to one another in changing marine ecosystems worldwide. Future work will examine their multi-faceted mutualism, particularly in characterizing the taxonomic breadth of potential seagrass and shellfish partnerships, as well as in defining the molecular mechanisms underlying the roles of both beneficial and detrimental microbial intermediates.  
+
+# Figure Legends
+
+Figure 1: Nearshore sampling locations in Puget Sound and outer coast, Washington, USA. GPS coordinates are given in Supplemental Table 1. 
+
+Figure 2: Example ordination plot of samples along a single transect from bare to eelgrass positions at Willapa Bay in July, 2017. Technical replicates of each biological sample are grouped as triangles. The single sample taken above eelgrass (located 47-90 m inside the edge of the contiguous beds) is shown in green (Eg), alongshore transect samples are shown in white and labeled with distance from the contiguous eelgrass bed in meters, and the single sample taken above bare substrate (located 16-670 m outside the edge of the contiguous beds) is shown in brown (Ba).
+
+Figure 3: Habitat associations of sequences assigned to each phylum. Phyla are ordered and colored by mean relative eDNA abundance index (Eg-Ba: eDNA abundance index in eelgrass minus eDNA abundance index over bare substrate). Greener samples on the left exhibit greater relative abundance in eelgrass, and browner samples on the right exhibit greater relative abundance on bare substrate. The central zero-line indicates no bias in abundance between habitat types. The violins are scaled to a fixed maximum width, and display the density of points within the interquartile range (shown by the violin area) around the median (central horizontal line). The significance of dinoflagellate habitat associations is denoted with an asterisk (paired Wilcoxon signed-rank test; p = 0.004).
+
+Figure 4: Habitat preferences of dinoflagellate sequences at site-months in which each taxon occurs at high abundance. eDNA abundance indices from eelgrass samples are shown in green, and those from bare samples are shown in brown. The significance of paired differences in eDNA abundance indices for these transect extremes is denoted with an asterisk (Wilcoxon signed-rank test; p < 0.002).
+
+Figure 5: Dinoflagellate eDNA abundance indices plotted for all sites and months combined at each point along the transects. The single sample taken above eelgrass (located 47-90 m inside the edge of the contiguous beds) is shown in green (Eg), alongshore transect samples are shown in white and labeled with distance from the contiguous eelgrass bed in meters, and the single sample taken above bare substrate (located 16-670 m outside the edge of the contiguous beds) is shown in brown (Ba). The violins are scaled to a fixed maximum width, and display the density of points within the interquartile range (shown by the violin area) around the median (central horizontal line). The two clusters produced by model-based clustering and differentiated by Wilcoxon signed-rank test of dinoflagellate eDNA abundance index (p < 0.02) are labeled "a" and "b."
+
+
+\bibliography{HALOrefs.bib}
+
+
+
